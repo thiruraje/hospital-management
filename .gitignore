@@ -1,9 +1,9 @@
 /node_modules
 
-# front end node module
+# frontend node module
 
 /frontend/node_modules
 
-# back end node module
+# backend node module
 
 /backend/node_modules
