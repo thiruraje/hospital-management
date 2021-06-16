@@ -1,24 +1,54 @@
 import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
+
+import Header from './screens/admin/layout/Header';
+import Menu from './screens/admin/layout/Menu';
+import Dashboard from './screens/admin/layout/Dashboard';
+import Footer from './screens/admin/layout/Footer';
+import Intro from './screens/Intro';
+import AdminLogin from './screens/admin/LoginPage';
+import AdminRegister from './screens/admin/RegisterPage';
+import AdminHomePage from './screens/admin/HomePage';
+import DoctorPage from './screens/admin/doctor/DoctorPage'
+import RoomPage from './screens/admin/room/RoomPage'
+import DoctorListPage from './screens/admin/doctor/DoctorListPage'
+import RoomListPage from './screens/admin/room/RoomListPage'
+
+import DoctorLogin from './screens/doctor/LoginPage';
+import DoctorRegister from './screens/doctor/RegisterPage';
+import DoctorHomePage from './screens/doctor/HomePage';
+import AddPatientPage from './screens/doctor/patient/AddPatientPage'
+import ViewPatientPage from './screens/doctor/patient/ViewPatientPage'
+import CheckupDetailPage from './screens/doctor/CheckupDetailPage'
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div class="wrapper">
+        <main className="main">
+          <div className="content">
+            <Route path="/admin/home" component={AdminHomePage} />
+            <Route path="/admin/addDoctor" component={DoctorPage} />
+            <Route path="/admin/addRooms" component={RoomPage} />
+            <Route path="/admin/viewDoctor" component={DoctorListPage} />
+            <Route path="/admin/viewRooms" component={RoomListPage} />
+            <Route path="/admin/register" component={AdminRegister} />
+            <Route path="/admin/login" component={AdminLogin} />
+
+            <Route path="/doctor/login" component={DoctorLogin} />
+            <Route path="/doctor/register" component={DoctorRegister} />
+            <Route path="/doctor/home" component={DoctorHomePage} />
+            <Route path="/doctor/addPatient" component={AddPatientPage} />
+            <Route path="/doctor/viewPatient" component={ViewPatientPage} />
+            <Route path="/doctor/checkupdetail" component={CheckupDetailPage} />
+            <Route path="/" exact={true} component={Intro} />
+          </div>
+        </main>
+      </div>
+    </BrowserRouter>
   );
 }
 
