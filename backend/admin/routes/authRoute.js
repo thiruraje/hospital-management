@@ -3,6 +3,7 @@ const Admin = require('../model/authModel');
 
 const router = express.Router();
 router.post('/signin', async (req, res) => {
+    
     const signinAdmin = await Admin.findOne({
       email: req.body.email,
       password: req.body.password,
@@ -18,6 +19,9 @@ router.post('/signin', async (req, res) => {
       res.status(401).send({ message: 'Invalid Email or Password.' });
     }
   });
+
+
+
 router.get('/createadmin', async (req, res) => {
     try {
       const admin = new Admin({

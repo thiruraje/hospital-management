@@ -1,14 +1,16 @@
 import { 
     ADMIN_SIGNIN_REQUEST, 
     ADMIN_SIGNIN_SUCCESS, 
-    ADMIN_SIGNIN_FAIL, 
-    ADMIN_REGISTER_REQUEST, 
-    ADMIN_REGISTER_SUCCESS, 
-    ADMIN_REGISTER_FAIL, 
-    ADMIN_LOGOUT, 
-    ADMIN_UPDATE_REQUEST, 
-    ADMIN_UPDATE_SUCCESS, 
-    ADMIN_UPDATE_FAIL 
+    ADMIN_SIGNIN_FAIL,  
+    ADMIN_LOGOUT,
+    DOCTOR_ADD_REQUEST,
+    DOCTOR_ADD_SUCCESS,
+    DOCTOR_ADD_FAIL,
+    ROOM_ADD_REQUEST,
+    ROOM_ADD_SUCCESS,
+    ROOM_ADD_FAIL,
+
+
 } from "../constants/adminConstants";
 
 
@@ -26,6 +28,36 @@ function adminSigninReducer(state = {}, action) {
     }
   }
 
+  function addDoctorReducer(state = {}, action) {
+    switch (action.type) {
+      case DOCTOR_ADD_REQUEST:
+        return { loading: true };
+      case DOCTOR_ADD_SUCCESS:
+        return { loading: false, insert:action.payload };
+      case DOCTOR_ADD_FAIL:
+        return { loading: false, insert:false  };
+      default: return state;
+    }
+  }
+
+  function addRoomReducer(state = {}, action) {
+    switch (action.type) {
+      case  ROOM_ADD_REQUEST:
+        return { loading: true };
+      case  ROOM_ADD_SUCCESS:
+        return { loading: false, insert:action.payload };
+      case  ROOM_ADD_FAIL:
+        return { loading: false, insert:false  };
+      default: return state;
+    }
+  }
+
+
+
+
+
   export {
-    adminSigninReducer
+    adminSigninReducer,
+    addDoctorReducer,
+    addRoomReducer
   }

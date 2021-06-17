@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import Header from './layout/Header';
 import Menu from './layout/Menu';
 import Footer from './layout/Footer';
-import Dashboard from './layout/Dashboard';
+
 
 
 function HomePage(props) {
+    const adminSignin = useSelector(state => state.adminSignin);
+    const { loading, adminInfo, error } = adminSignin;
+    const [admin, setAdmin] = useState([]);
+
+    useEffect(() => {
+        const admin = adminInfo;
+        setAdmin(admin);
+    }, []);
 
     return (
         <div class="wrapper">
@@ -26,6 +37,7 @@ function HomePage(props) {
                 {/* /.content-header */}
                 {/* Main content */}
                 <section className="content">
+                    
                     <div className="container-fluid">
                         {/* Small boxes (Stat box) */}
                         <div className="row">
@@ -39,7 +51,7 @@ function HomePage(props) {
                                     <div className="icon">
                                         <i className="ion ion-person-add" />
                                     </div>
-                                    <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
+                                    <Link to="/admin/viewRooms"className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
                                 </div>
                             </div>
                             {/* ./col */}
@@ -53,7 +65,7 @@ function HomePage(props) {
                                     <div className="icon">
                                         <i className="ion ion-pie-graph" />
                                     </div>
-                                    <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
+                                    <Link to="/admin/viewRooms"className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
                                 </div>
                             </div>
                             {/* ./col */}

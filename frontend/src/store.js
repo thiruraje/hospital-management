@@ -4,7 +4,9 @@ import Cookie from 'js-cookie';
 
 
 import {
-  adminSigninReducer
+  adminSigninReducer,
+  addDoctorReducer,
+  addRoomReducer
 } from './reducers/adminReducer';
 
 const adminInfo = Cookie.getJSON('adminInfo') || null;
@@ -16,7 +18,9 @@ const initialState = {
   doctorInfo: { doctorInfo },
 };
 const reducer = combineReducers({
-  adminSignin: adminSigninReducer
+  adminSignin: adminSigninReducer,
+  addDoctor: addDoctorReducer,
+  addRoom:addRoomReducer
 });
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
