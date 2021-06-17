@@ -1,46 +1,55 @@
 
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { signin } from '../../action/doctorAction';
 
-class LoginPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-    mySubmitHandler = (event) => {
+function LoginPage(props) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
+    const doctorSignin = useSelector(state => state.doctorSignin);
+    const { loading, doctorInfo, error } = doctorSignin;
+
+    useEffect(() => {
+        if (doctorInfo) {
+            props.history.push('/doctor/home');
+        }
+        return () => {
+            //
+        };
+    }, [doctorInfo]);
+
+    const mySubmitHandler = (event) => {
         event.preventDefault();
-        this.props.history.push('/doctor/home');
+        dispatch(signin(email, password));
     }
-    render() {
-        return (
-            <div>
-                <div className="auth-wrapper">
-                    <div className="auth-inner">
-                        <form onSubmit={this.mySubmitHandler}>
-                            <h3>Sign In</h3>
+    return (
+        <div>
+            <div className="auth-wrapper">
+                <div className="auth-inner">
+                    <form onSubmit={mySubmitHandler}>
+                        <h3>Sign In</h3>
 
-                            <div className="form-group">
-                                <label>Email address</label>
-                                <input type="email" className="form-control" placeholder="Enter email" />
-                            </div>
+                        <div className="form-group">
+                            <label>Email address</label>
+                            <input type="email" className="form-control" onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" />
+                        </div>
 
-                            <div className="form-group">
-                                <label>Password</label>
-                                <input type="password" className="form-control" placeholder="Enter password" />
-                            </div>
+                        <div className="form-group">
+                            <label>Password</label>
+                            <input type="password" className="form-control" onChange={(e) => setPassword(e.target.value)} placeholder="Enter password" />
+                        </div>
 
-                            <button type="submit" className="btn btn-primary btn-block">Submit</button>
-                            <p className="forgot-password text-right">
-                                <Link to="/admin/register">Register</Link>
-                            </p>
-                        </form>
-                    </div>
+                        <button type="submit" className="btn btn-primary btn-block">Submit</button>
+                    </form>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
+
 
 export default LoginPage;

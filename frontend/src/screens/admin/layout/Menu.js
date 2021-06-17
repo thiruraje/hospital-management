@@ -16,7 +16,7 @@ function Menu(props) {
     event.preventDefault();
     dispatch(adminLogout());
     history.push("/");
-    }
+  }
 
   return (
     <div>
@@ -30,7 +30,7 @@ function Menu(props) {
           {/* Sidebar user panel (optional) */}
           <div className="user-panel mt-3 pb-3 mb-3 d-flex">
             <div className="info">
-              <a href="" className="d-block">{adminInfo.name}</a>
+              <a href="" className="d-block">Admin : {adminInfo.name}</a>
             </div>
           </div>
           {/* Sidebar Menu */}

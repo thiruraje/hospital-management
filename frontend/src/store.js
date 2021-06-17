@@ -9,18 +9,27 @@ import {
   addRoomReducer
 } from './reducers/adminReducer';
 
+import {
+  doctorSigninReducer,
+  addPatientReducer
+} from './reducers/doctorReducer';
+
 const adminInfo = Cookie.getJSON('adminInfo') || null;
 const doctorInfo = Cookie.getJSON('doctorInfo') || null;
 
 
 const initialState = {
+  doctorSignin: { doctorInfo },
   adminSignin: { adminInfo },
-  doctorInfo: { doctorInfo },
 };
 const reducer = combineReducers({
+  
   adminSignin: adminSigninReducer,
   addDoctor: addDoctorReducer,
-  addRoom:addRoomReducer
+  addRoom:addRoomReducer,
+  doctorSignin:doctorSigninReducer,
+  addPatient:addPatientReducer
+ 
 });
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
