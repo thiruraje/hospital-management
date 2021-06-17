@@ -26,7 +26,6 @@ function LoginPage(props) {
     const mySubmitHandler = (event) => {
         event.preventDefault();
         dispatch(signin(email, password));
-        // this.props.history.push('/admin/home');
     }
 
     return <div>

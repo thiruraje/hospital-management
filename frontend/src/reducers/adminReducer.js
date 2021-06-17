@@ -11,7 +11,7 @@ import {
     ROOM_ADD_FAIL,
 
 
-} from "../constants/adminConstants";
+} from "../constants/Constants";
 
 
 function adminSigninReducer(state = {}, action) {

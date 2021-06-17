@@ -26,6 +26,9 @@ const adminAuthRoute  = require('./admin/routes/authRoute');
 const adminDoctorRoute  = require('./admin/routes/doctorRoute');
 const adminRoomRoute  = require('./admin/routes/roomRoute');
 
+const doctorAuthRoute  = require('./doctor/routes/authRoute');
+const doctorPatientRoute  = require('./doctor/routes/patientRoute');
+
 
 
 var app = express();
@@ -38,6 +41,9 @@ app.use(cors());
 app.use('/api/admin', adminAuthRoute);
 app.use('/api/admin/', adminDoctorRoute);
 app.use('/api/admin/', adminRoomRoute);
+
+app.use('/api/doctor', doctorAuthRoute);
+app.use('/api/doctor', doctorPatientRoute);
 
 
 
