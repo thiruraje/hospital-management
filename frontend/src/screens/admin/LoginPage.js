@@ -1,46 +1,56 @@
 
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { signin } from '../../action/adminAction';
 
-class LoginPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-    mySubmitHandler = (event) => {
+
+function LoginPage(props) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
+    const adminSignin = useSelector(state => state.adminSignin);
+    const { loading, adminInfo, error } = adminSignin;
+
+    useEffect(() => {
+        if (adminInfo) {
+            props.history.push('/admin/home');
+        }
+        return () => {
+            //
+        };
+    }, [adminInfo]);
+
+    const mySubmitHandler = (event) => {
         event.preventDefault();
-        this.props.history.push('/admin/home');
+        dispatch(signin(email, password));
+        // this.props.history.push('/admin/home');
     }
-    render() {
-        return (
-            <div>
-                <div className="auth-wrapper">
-                    <div className="auth-inner">
-                        <form onSubmit={this.mySubmitHandler}>
-                            <h3>Sign In</h3>
 
-                            <div className="form-group">
-                                <label>Email address</label>
-                                <input type="email" className="form-control" placeholder="Enter email" />
-                            </div>
+    return <div>
+        <div className="auth-wrapper">
+            <div className="auth-inner">
+                <form onSubmit={mySubmitHandler}>
+                    <h3>Sign In</h3>
 
-                            <div className="form-group">
-                                <label>Password</label>
-                                <input type="password" className="form-control" placeholder="Enter password" />
-                            </div>
-
-                            <button type="submit" className="btn btn-primary btn-block">Submit</button>
-                            <p className="forgot-password text-right">
-                                <Link to="/admin/register">Register</Link>
-                            </p>
-                        </form>
+                    <div className="form-group">
+                        <label>Email address</label>
+                        <input type="email" className="form-control" onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" />
                     </div>
-                </div>
+
+                    <div className="form-group">
+                        <label>Password</label>
+                        <input type="password" className="form-control" onChange={(e) => setPassword(e.target.value)} placeholder="Enter password" />
+                    </div>
+
+                    <button type="submit" className="btn btn-primary btn-block">Submit</button>
+
+                </form>
             </div>
-        );
-    }
+        </div>
+    </div>
 }
 
 export default LoginPage;
