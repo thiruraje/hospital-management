@@ -5,6 +5,7 @@ const router = express.Router();
 router.post('/createpatient', async (req, res) => {
     try {
         const patient = new Patient({
+            doctor: req.body.doctor_id,
             name: req.body.name,
             age: req.body.age,
             mobile: req.body.mobile,
@@ -21,9 +22,9 @@ router.post('/createpatient', async (req, res) => {
     }
 });
 
-router.get('/patients', async (req, res) => {
+router.get('/patients/  :doctor_id', async (req, res) => {
     try {
-        const patients = await Patient.find({});
+        const patients = await Patient.find({'doctor':req.params.doctor_id});
         res.send(patients);
     } catch (error) {
         res.send({ message: error.message });
