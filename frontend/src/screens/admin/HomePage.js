@@ -25,8 +25,7 @@ function HomePage(props) {
         setPatientCount(datas.patients.length)
     };
 
-    var myArray = [1, 2, 3, 4, 5, 6, 7, 8];
-    var result = myArray.length;
+
 
     return (
         <div class="wrapper">

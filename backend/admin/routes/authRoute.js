@@ -26,7 +26,7 @@ router.get('/createadmin', async (req, res) => {
       const admin = new Admin({
         name: 'thiru',
         email: 'admin@example.com',
-        password: '1234',
+        password: '1234', 
       });
       const newAdmin = await admin.save();
       res.send(newAdmin);
