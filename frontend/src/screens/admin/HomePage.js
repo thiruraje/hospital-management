@@ -9,14 +9,24 @@ import Footer from './layout/Footer';
 
 
 function HomePage(props) {
-    const adminSignin = useSelector(state => state.adminSignin);
-    const { loading, adminInfo, error } = adminSignin;
-    const [admin, setAdmin] = useState([]);
-
     useEffect(() => {
-        const admin = adminInfo;
-        setAdmin(admin);
+        fetchDatas();
     }, []);
+
+    const [room_count, setRoomCount] = useState([]);
+    const [Doctor_count, setDoctorCount] = useState([]);
+    const [patients_count, setPatientCount] = useState([]);
+
+    const fetchDatas = async () => {
+        var data = await fetch('http://localhost:4000/api/admin/dashboard-data');
+        var datas = await data.json();
+        setDoctorCount(datas.doctors.length);
+        setRoomCount(datas.rooms.length);
+        setPatientCount(datas.patients.length)
+    };
+
+    var myArray = [1, 2, 3, 4, 5, 6, 7, 8];
+    var result = myArray.length;
 
     return (
         <div class="wrapper">
@@ -30,14 +40,15 @@ function HomePage(props) {
                             <div className="col-sm-6">
                                 <h1 className="m-0 text-dark">Dashboard</h1>
                             </div>{/* /.col */}
-                           
+
                         </div>{/* /.row */}
                     </div>{/* /.container-fluid */}
                 </div>
                 {/* /.content-header */}
                 {/* Main content */}
                 <section className="content">
-                    
+
+
                     <div className="container-fluid">
                         {/* Small boxes (Stat box) */}
                         <div className="row">
@@ -45,13 +56,26 @@ function HomePage(props) {
                                 {/* small box */}
                                 <div className="small-box bg-warning">
                                     <div className="inner">
-                                        <h3>44</h3>
-                                        <p>Patient Total</p>
+                                        <h3>{Doctor_count}</h3>
+                                        <p>Doctor Details</p>
                                     </div>
                                     <div className="icon">
                                         <i className="ion ion-person-add" />
                                     </div>
-                                    <Link to="/admin/viewRooms"className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
+                                    <Link to="/admin/viewDoctor" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
+                                </div>
+                            </div>
+                            <div className="col-lg-3 col-6">
+                                {/* small box */}
+                                <div className="small-box bg-warning">
+                                    <div className="inner">
+                                        <h3>{patients_count}</h3>
+                                        <p>Patients Details</p>
+                                    </div>
+                                    <div className="icon">
+                                        <i className="ion ion-person-add" />
+                                    </div>
+                                    <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
                                 </div>
                             </div>
                             {/* ./col */}
@@ -59,13 +83,13 @@ function HomePage(props) {
                                 {/* small box */}
                                 <div className="small-box bg-danger">
                                     <div className="inner">
-                                        <h3>65</h3>
+                                        <h3>{room_count}</h3>
                                         <p>Room Details</p>
                                     </div>
                                     <div className="icon">
                                         <i className="ion ion-pie-graph" />
                                     </div>
-                                    <Link to="/admin/viewRooms"className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
+                                    <Link to="/admin/viewRooms" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
                                 </div>
                             </div>
                             {/* ./col */}
