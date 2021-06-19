@@ -40,8 +40,7 @@ function RoomListPage(props) {
                                 <th scope="col">#</th>
                                 <th scope="col">Room No</th>
                                 <th scope="col">Floor</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">Bed Count</th>
+                                <th scope="col">isOccupied</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,8 +50,8 @@ function RoomListPage(props) {
                                         <td>#</td>
                                         <td>{room.no}</td>
                                         <td>{room.floor}</td>
-                                        <td>{room.type}</td>
-                                        <td>{room.bed_count}</td>
+                                        <td>{room.is_occupied ?"yes" : "No"}</td>
+
 
                                     </tr>
                                 ))

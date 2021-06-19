@@ -11,15 +11,11 @@ function RoomPage(props) {
     const dispatch = useDispatch();
     const [no, setNo] = useState('');
     const [floor, setFloor] = useState('');
-    const [type, setType] = useState('');
-    const [bed_count, setBedcount] = useState('');
     const mySubmitHandler = (event) => {
         event.preventDefault();
         dispatch(addRoom(
             no,
             floor,
-            type,
-            bed_count
             ));
         props.history.push('/admin/viewRooms');
     }
@@ -69,26 +65,7 @@ function RoomPage(props) {
 
 
                                                 </div>
-                                                <div className="row">
-                                                    <div className="col-sm-6">
-                                                        <div className="form-group">
-                                                            <div className="col-sm-12">
-                                                                <label>Room Type</label> <select name="type"onChange={(e) => setType(e.target.value)} className="form-control">
-                                                                    <option value>Select type</option>
-                                                                    <option>Single</option>
-                                                                    <option>Multiple</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-sm-6">
-                                                        <div className="form-group">
-                                                            <div className="col-sm-12">
-                                                                <label>Bed Count</label> <input type="text" className="form-control" name="bed_count"onChange={(e) => setBedcount(e.target.value)} required />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                
 
                                                 <br />
                                                 <div align="center">
