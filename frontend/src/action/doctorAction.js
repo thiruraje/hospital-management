@@ -26,12 +26,12 @@ const signin = (email, password) => async (dispatch) => {
     }
 }
 
-const addPatient = (name,age,mobile,gender,heigth,weigth,temperature,address) => async (dispatch,getState) => {
+const addPatient = (name,age,mobile,gender,heigth,weigth,address,condition,admitedRoonNo) => async (dispatch,getState) => {
     dispatch({ type:PATIENT_ADD_REQUEST });
     try {
         const { doctorSignin: { doctorInfo } } = getState();
         const doctor_id = doctorInfo._id;
-        await Axios.post("http://localhost:4000/api/doctor/createpatient", { doctor_id,name,age,mobile,gender,heigth,weigth,temperature,address});
+        await Axios.post("http://localhost:4000/api/doctor/createpatient", { doctor_id,name,age,mobile,gender,heigth,weigth,address,condition,admitedRoonNo});
         dispatch({ type:PATIENT_ADD_SUCCESS, payload: true });
 
     } catch (error) {
