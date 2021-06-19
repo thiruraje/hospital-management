@@ -6,6 +6,9 @@ import {
     PATIENT_ADD_REQUEST,
     PATIENT_ADD_SUCCESS,
     PATIENT_ADD_FAIL,
+    CHECKUP_ADD_REQUEST,
+    CHECKUP_ADD_SUCCESS,
+    CHECKUP_ADD_FAIL,
 
 } from "../constants/Constants";
 
@@ -35,7 +38,20 @@ function addPatientReducer(state = {}, action) {
       default: return state;
     }
   }
+
+  function addCheckupReducer(state = {}, action) {
+    switch (action.type) {
+      case CHECKUP_ADD_REQUEST:
+        return { loading: true };
+      case CHECKUP_ADD_SUCCESS:
+        return { loading: false, insert:action.payload };
+      case CHECKUP_ADD_FAIL:
+        return { loading: false, insert:false  };
+      default: return state;
+    }
+  }
 export {
     doctorSigninReducer,
-    addPatientReducer
+    addPatientReducer,
+    addCheckupReducer
 }

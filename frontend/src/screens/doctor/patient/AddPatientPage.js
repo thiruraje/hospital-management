@@ -35,9 +35,6 @@ function AddPatientPage(props) {
 
     const mySubmitHandler = (event) => {
         event.preventDefault();
-        // console.log(condition)
-        // console.log(isSeriousCondition)
-        // console.log(admitedRoonNo)
         if(isSeriousCondition){
             dispatch(addPatient(name, age, mobile, gender, heigth, weigth, address,condition,admitedRoonNo));
         }else{
@@ -61,13 +58,8 @@ function AddPatientPage(props) {
                         </div>{/* /.row */}
                     </div>{/* /.container-fluid */}
                 </div>
-
-
                 <section className="content">
                     <div className="col-sm-12">
-
-
-
                         <hr />
                         <div className="row">
                             <div className="col-xs-24">

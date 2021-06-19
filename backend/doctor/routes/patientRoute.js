@@ -1,5 +1,7 @@
 var express = require('express');
 const Patient = require('../model/patientModel');
+const Checkup = require('../model/checkupDetailModel');
+
 const Room = require('../../admin/model/roomModel');
 
 const router = express.Router();
@@ -19,7 +21,7 @@ router.post('/createpatient', async (req, res) => {
             room: req.body.admitedRoonNo,
         });
         const newPatient = await patient.save();
-        
+
         const room = await Room.findById(req.body.admitedRoonNo);
         room.is_occupied = true;
         const updatedRoom = await room.save();
@@ -56,5 +58,24 @@ router.get('/roomname/:roomId', async (req, res) => {
         res.send({ message: error.message });
     }
 });
+
+router.post('/checkupdetails', async (req, res) => {
+
+    try {
+        var datas = req.body.inputList;
+        for (let step = 0; step < datas.length; step++) {
+            const checkup = new Checkup({
+                patient: req.body.patientId,
+                problem: datas[step]['problem'],
+                solution: datas[step]['solution'],
+            });
+            const newCheckup = await checkup.save();
+        }
+    } catch (error) {
+        console.log(error)
+        res.send({ message: error.message });
+    }
+});
+
 
 module.exports = router;

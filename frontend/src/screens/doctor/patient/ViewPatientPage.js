@@ -9,11 +9,11 @@ function ViewPatientPage(props) {
     const doctorSigin = useSelector(state => state.doctorSignin);
     const { loading, doctorInfo, error } = doctorSigin;
     useEffect(() => {
-        fetchDoctors();
+        fetchPatients();
     }, []);
 
     const [patients, setPatinet] = useState([]);
-    const fetchDoctors = async () => {
+    const fetchPatients = async () => {
         const doctor_id = encodeURIComponent(doctorInfo._id);
         const data = await fetch(`http://localhost:4000/api/doctor/patients/${doctor_id}`);
         const patients = await data.json();
