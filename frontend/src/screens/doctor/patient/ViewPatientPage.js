@@ -4,6 +4,7 @@ import Footer from '../layout/Footer';
 
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 function ViewPatientPage(props) {
     const doctorSigin = useSelector(state => state.doctorSignin);
@@ -46,26 +47,31 @@ function ViewPatientPage(props) {
                                 <th scope="col">Admit/Normal</th>
                                 <th scope="col">Discharge/Not</th>
                                 <th scope="col">Room No</th>
+                                <th scope="col">Detail</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
                                 (patients.length != 0) ?
-                                    patients.map(doctor => (
-                                        <tr key={doctor._id}>
+                                    patients.map(patient => (
+                                        <tr key={patient._id}>
                                             <td>#</td>
-                                            <td>{doctor.name}</td>
-                                            <td>{doctor.age}</td>
-                                            <td>{doctor.gender}</td>
-                                            <td>{doctor.weigth}</td>
-                                            <td>{doctor.heigth}</td>
-                                            <td>{doctor.condition}</td>
+                                            <td>{patient.name}</td>
+                                            <td>{patient.age}</td>
+                                            <td>{patient.gender}</td>
+                                            <td>{patient.weigth}</td>
+                                            <td>{patient.heigth}</td>
+                                            <td>{patient.condition}</td>
                                             <td></td>
-                                            <td> {doctor.room != null ?
+                                            <td> {patient.room != null ?
                                                 <div>
-                                                    <RoomNo roomId={doctor.room} />
+                                                    <RoomNo roomId={patient.room} />
                                                 </div>
                                                 : "-"}</td>
+                                            <td>
+                                                <Link to={`/doctor/patientdetail/${patient._id}`}>Detail</Link>
+
+                                            </td>
                                         </tr>
                                     ))
                                     :

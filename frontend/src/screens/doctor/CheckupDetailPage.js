@@ -18,6 +18,7 @@ function CheckupDetailPage(props) {
 
     const [patients, setPatinet] = useState([]);
     const [patientId, setPatinetId] = useState([]);
+    const [fee, setFee] = useState([]);
 
     const [inputList, setInputList] = useState([{ problem: "", solution: "" }]);
 
@@ -49,7 +50,7 @@ function CheckupDetailPage(props) {
     };
     const mySubmitHandler = (event) => {
         event.preventDefault();
-        dispatch(addCheckupDetail(patientId, inputList));
+        dispatch(addCheckupDetail(patientId,fee, inputList));
         props.history.push('/doctor/home');
     }
     return (
@@ -79,9 +80,9 @@ function CheckupDetailPage(props) {
                                         <form className="form-horizontal" onSubmit={mySubmitHandler}>
                                             <div className="box-body">
                                                 <div className="row">
-                                                    <div className="col-sm-12">
+                                                    <div className="col-sm-6">
                                                         <div className="col-sm-12">
-                                                            <label>Patient</label> <select name="patient"onChange={(e) => setPatinetId(e.target.value)} className="form-control">
+                                                            <label>Patient</label> <select name="patient" onChange={(e) => setPatinetId(e.target.value)} className="form-control">
                                                                 <option value>Select patient</option>
                                                                 {
                                                                     patients.map(function (patient) {
@@ -93,15 +94,16 @@ function CheckupDetailPage(props) {
                                                     </div>
                                                     <br></br>
                                                     <div className="col-sm-6">
-                                                        <div className="form-group">
-                                                            <div className="col-sm-12">
-                                                                <label></label>
+                                                        <div className="col-sm-12">
+                                                            <div className="form-group">
+                                                                <div className="col-sm-12">
+                                                                    <label>Fee's</label> <input type="text" className="form-control" name="fee" onChange={(e) => setFee(e.target.value)}required />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
-
                                                 </div>
+                                                <br></br>
                                                 <div className="row">
                                                     <div className="col-sm-4">
                                                         <div className="col-sm-12">
@@ -164,9 +166,6 @@ function CheckupDetailPage(props) {
                                                         </div>
                                                     );
                                                 })}
-
-
-
                                                 <br />
                                                 <div align="center">
                                                     <button type="submit" className="btn btn-info">Save</button>

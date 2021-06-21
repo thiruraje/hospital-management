@@ -40,11 +40,11 @@ const addPatient = (name, age, mobile, gender, heigth, weigth, address, conditio
     }
 }
 
-const addCheckupDetail = (patientId, inputList) => async (dispatch, getState) => {
+const addCheckupDetail = (patientId,fee, inputList) => async (dispatch, getState) => {
 
     dispatch({ type: CHECKUP_ADD_REQUEST });
     try {
-        await Axios.post("http://localhost:4000/api/doctor/checkupdetails", { patientId, inputList });
+        await Axios.post("http://localhost:4000/api/doctor/checkupdetails", { patientId,fee, inputList });
         dispatch({ type: CHECKUP_ADD_SUCCESS, payload: true });
 
     } catch (error) {

@@ -63,16 +63,33 @@ router.post('/checkupdetails', async (req, res) => {
 
     try {
         var datas = req.body.inputList;
-        for (let step = 0; step < datas.length; step++) {
-            const checkup = new Checkup({
-                patient: req.body.patientId,
-                problem: datas[step]['problem'],
-                solution: datas[step]['solution'],
-            });
-            const newCheckup = await checkup.save();
-        }
+        const checkup = new Checkup({
+            patient: req.body.patientId,
+            fee: req.body.fee,
+            detail: datas,
+            
+        });
+        console.log(checkup)
+        const newCheckup = await checkup.save();
+        res.sent(newCheckup)
+
     } catch (error) {
         console.log(error)
+        res.send({ message: error.message });
+    }
+});
+
+router.get('/patient-detail/:patient_id', async (req, res) => {
+    try {
+        const patient = await Patient.findOne({ '_id': req.params.patient_id });
+        const checkups = await Checkup.find({ 'patient': req.params.patient_id });
+        const data = {
+            patient : patient,
+            checkups : checkups
+
+        }
+        res.send(data);
+    } catch (error) {
         res.send({ message: error.message });
     }
 });
