@@ -1,9 +1,33 @@
-import React, { useState } from 'react'
 import Header from './layout/Header';
 import Menu from './layout/Menu';
 import Footer from './layout/Footer';
-function CheckupDetailPage() {
+
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addCheckupDetail } from '../../action/doctorAction';
+
+function CheckupDetailPage(props) {
+    const dispatch = useDispatch();
+    const doctorSigin = useSelector(state => state.doctorSignin);
+    const { loading, doctorInfo, error } = doctorSigin;
+
+
+    useEffect(() => {
+        fetchPatients();
+    }, []);
+
+    const [patients, setPatinet] = useState([]);
+    const [patientId, setPatinetId] = useState([]);
+    const [fee, setFee] = useState([]);
+
     const [inputList, setInputList] = useState([{ problem: "", solution: "" }]);
+
+    const fetchPatients = async () => {
+        const doctor_id = encodeURIComponent(doctorInfo._id);
+        const data = await fetch(`http://localhost:4000/api/doctor/patients/${doctor_id}`);
+        const patients = await data.json();
+        setPatinet(patients);
+    };
 
     // handle input change
     const handleInputChange = (e, index) => {
@@ -24,8 +48,11 @@ function CheckupDetailPage() {
     const handleAddClick = () => {
         setInputList([...inputList, { problem: "", solution: "" }]);
     };
-
-
+    const mySubmitHandler = (event) => {
+        event.preventDefault();
+        dispatch(addCheckupDetail(patientId,fee, inputList));
+        props.history.push('/doctor/home');
+    }
     return (
         <div class="wrapper">
             <Header />
@@ -42,8 +69,6 @@ function CheckupDetailPage() {
                         </div>{/* /.row */}
                     </div>{/* /.container-fluid */}
                 </div>
-                {/* /.content-header */}
-                {/* Main content */}
                 <section className="content">
                     <div className="col-sm-12">
 
@@ -52,29 +77,33 @@ function CheckupDetailPage() {
                             <div className="col-xs-24">
                                 <div className="box box-info">
                                     <div className="box-body">
-                                        <form className="form-horizontal">
+                                        <form className="form-horizontal" onSubmit={mySubmitHandler}>
                                             <div className="box-body">
                                                 <div className="row">
-                                                    <div className="col-sm-12">
+                                                    <div className="col-sm-6">
                                                         <div className="col-sm-12">
-                                                            <label>Patient</label> <select name="patient" className="form-control">
-                                                                <option value>Select Patient</option>
-                                                                <option>Patient 1</option>
-                                                                <option>Patient 2</option>
+                                                            <label>Patient</label> <select name="patient" onChange={(e) => setPatinetId(e.target.value)} className="form-control">
+                                                                <option value>Select patient</option>
+                                                                {
+                                                                    patients.map(function (patient) {
+                                                                        return <option value={patient._id}>{patient.name}</option>;
+                                                                    })
+                                                                }
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <br></br>
                                                     <div className="col-sm-6">
-                                                        <div className="form-group">
-                                                            <div className="col-sm-12">
-                                                                <label></label>
+                                                        <div className="col-sm-12">
+                                                            <div className="form-group">
+                                                                <div className="col-sm-12">
+                                                                    <label>Fee's</label> <input type="text" className="form-control" name="fee" onChange={(e) => setFee(e.target.value)}required />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
-
                                                 </div>
+                                                <br></br>
                                                 <div className="row">
                                                     <div className="col-sm-4">
                                                         <div className="col-sm-12">
@@ -104,7 +133,7 @@ function CheckupDetailPage() {
                                                                         name="problem"
                                                                         value={x.problem}
                                                                         onChange={e => handleInputChange(e, i)}
-                                                                         />
+                                                                    />
                                                                 </div>
                                                             </div>
                                                             <br></br>
@@ -117,7 +146,7 @@ function CheckupDetailPage() {
                                                                             value={x.solution}
                                                                             onChange={e => handleInputChange(e, i)}
                                                                             name="solution"
-                                                                             />
+                                                                        />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -137,9 +166,6 @@ function CheckupDetailPage() {
                                                         </div>
                                                     );
                                                 })}
-
-
-
                                                 <br />
                                                 <div align="center">
                                                     <button type="submit" className="btn btn-info">Save</button>

@@ -21,6 +21,8 @@ import DoctorHomePage from './screens/doctor/HomePage';
 import AddPatientPage from './screens/doctor/patient/AddPatientPage'
 import ViewPatientPage from './screens/doctor/patient/ViewPatientPage'
 import CheckupDetailPage from './screens/doctor/CheckupDetailPage'
+import PatientDetailPage from './screens/doctor/patient/PatientDetailPage'
+
 
 
 
@@ -44,6 +46,7 @@ function App() {
             <Route path="/doctor/addPatient" component={AddPatientPage} />
             <Route path="/doctor/viewPatient" component={ViewPatientPage} />
             <Route path="/doctor/checkupdetail" component={CheckupDetailPage} />
+            <Route path="/doctor/patientdetail/:id" component={PatientDetailPage} />
             <Route path="/" exact={true} component={Intro} />
           </div>
         </main>

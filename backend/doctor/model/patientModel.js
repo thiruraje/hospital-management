@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-function deleteEmpty (v) {
-    if(v==null){
-      return null;
-    }
-    return v;
- }
+
 const patientSchema = new mongoose.Schema({
     doctor: {type:Schema.Types.ObjectId, ref:'Doctor'},
     name: { type: String, required: true },
