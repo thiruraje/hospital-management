@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from '../layout/Header';
 import Menu from '../layout/Menu';
 import Footer from '../layout/Footer';
+import { Link } from 'react-router-dom';
 
 
 function DoctorListPage(props) {
@@ -48,20 +49,25 @@ function DoctorListPage(props) {
                                 <th scope="col">Gender</th>
                                 <th scope="col">Type</th>
                                 <th scope="col">Country</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
                                 doctors.map(doctor => (
                                     <tr key={doctor._id}>
-                                    <td>#</td>
-                                    <td>{doctor.name}</td>
-                                    <td>{doctor.email}</td>
-                                    <td>{doctor.gender}</td>
-                                    <td>{doctor.type}</td>
-                                    <td>{doctor.country}</td>
-                                   
-                                  </tr>
+                                        <td>#</td>
+                                        <td>{doctor.name}</td>
+                                        <td>{doctor.email}</td>
+                                        <td>{doctor.gender}</td>
+                                        <td>{doctor.type}</td>
+                                        <td>{doctor.country}</td>
+                                        <td>
+                                            <Link to={`/admin/doctordetail/${doctor._id}`}>Detail</Link>
+
+                                        </td>
+
+                                    </tr>
                                 ))
                             }
 

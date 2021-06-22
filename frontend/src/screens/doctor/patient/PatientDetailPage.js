@@ -5,7 +5,6 @@ import Footer from '../layout/Footer';
 import React, { useEffect, useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { addPatient } from '../../../action/doctorAction';
 function PatientDetailPage(props) {
 
     const { id } = props.match.params

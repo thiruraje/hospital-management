@@ -10,10 +10,13 @@ import Intro from './screens/Intro';
 import AdminLogin from './screens/admin/LoginPage';
 import AdminRegister from './screens/admin/RegisterPage';
 import AdminHomePage from './screens/admin/HomePage';
+import AdminBillPage from './screens/admin/PatientbillPage';
+
 import DoctorPage from './screens/admin/doctor/DoctorPage'
 import RoomPage from './screens/admin/room/RoomPage'
 import DoctorListPage from './screens/admin/doctor/DoctorListPage'
 import RoomListPage from './screens/admin/room/RoomListPage'
+import DoctorDetailPage from './screens/admin/doctor/DoctorDetailPage'
 
 import DoctorLogin from './screens/doctor/LoginPage';
 import DoctorRegister from './screens/doctor/RegisterPage';
@@ -33,9 +36,11 @@ function App() {
         <main className="main">
           <div className="content">
             <Route path="/admin/home" component={AdminHomePage} />
+            <Route path="/admin/bill" component={AdminBillPage} />
             <Route path="/admin/addDoctor" component={DoctorPage} />
             <Route path="/admin/addRooms" component={RoomPage} />
             <Route path="/admin/viewDoctor" component={DoctorListPage} />
+            <Route path="/admin/doctordetail/:id" component={DoctorDetailPage} />
             <Route path="/admin/viewRooms" component={RoomListPage} />
             <Route path="/admin/register" component={AdminRegister} />
             <Route path="/admin/login" component={AdminLogin} />

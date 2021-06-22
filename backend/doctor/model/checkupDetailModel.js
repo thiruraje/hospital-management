@@ -9,7 +9,7 @@ const chectupDetailSchema = new mongoose.Schema({
 
 const checkupSchema = new mongoose.Schema({
     patient: {type:Schema.Types.ObjectId, ref:'Patient'},
-    fee: { type: String, required: true },
+    fee: { type: Number, required: true },
     detail: [chectupDetailSchema],
     
     createdAt: {type: Date, default: Date.now}
