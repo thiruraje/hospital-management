@@ -97,7 +97,7 @@ function CheckupDetailPage(props) {
                                                         <div className="col-sm-12">
                                                             <div className="form-group">
                                                                 <div className="col-sm-12">
-                                                                    <label>Fee's</label> <input type="text" className="form-control" name="fee" onChange={(e) => setFee(e.target.value)}required />
+                                                                    <label>Fee's</label> <input type="number" className="form-control" name="fee" onChange={(e) => setFee(e.target.value)}required />
                                                                 </div>
                                                             </div>
                                                         </div>

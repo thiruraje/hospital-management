@@ -16,41 +16,45 @@ function HomePage(props) {
     const [room_count, setRoomCount] = useState([]);
     const [Doctor_count, setDoctorCount] = useState([]);
     const [patients_count, setPatientCount] = useState([]);
+    const [income, setIncome] = useState([]);
 
     const fetchDatas = async () => {
         var data = await fetch('http://localhost:4000/api/admin/dashboard-data');
         var datas = await data.json();
-        setDoctorCount(datas.doctors.length);
-        setRoomCount(datas.rooms.length);
-        setPatientCount(datas.patients.length)
+        setDoctorCount(datas.doctors.count);
+        setRoomCount(datas.rooms.count);
+        setPatientCount(datas.patients.count)
+        setIncome(datas.income.total_fee)
     };
-
-
 
     return (
         <div class="wrapper">
             <Header />
             <Menu />
             <div className="content-wrapper">
-                {/* Content Header (Page header) */}
                 <div className="content-header">
                     <div className="container-fluid">
-                        <div className="row mb-2">
-                            <div className="col-sm-6">
-                                <h1 className="m-0 text-dark">Dashboard</h1>
-                            </div>{/* /.col */}
-
-                        </div>{/* /.row */}
-                    </div>{/* /.container-fluid */}
+                        <h1 className="m-0 text-dark">Dashboard</h1>
+                    </div>
                 </div>
-                {/* /.content-header */}
-                {/* Main content */}
+                <br></br>
                 <section className="content">
-
-
                     <div className="container-fluid">
                         {/* Small boxes (Stat box) */}
                         <div className="row">
+                            <div className="col-lg-3 col-6">
+                                {/* small box */}
+                                <div className="small-box bg-success">
+                                    <div className="inner">
+                                        <h3>{income}<sup style={{ fontSize: 20 }}>₹</sup></h3>
+                                        <p>Total Income</p>
+                                    </div>
+                                    <div className="icon">
+                                        <i className="ion ion-stats-bars" />
+                                    </div>
+                                    <Link to="/admin/bill" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
+                                </div>
+                            </div>
                             <div className="col-lg-3 col-6">
                                 {/* small box */}
                                 <div className="small-box bg-warning">
@@ -74,7 +78,7 @@ function HomePage(props) {
                                     <div className="icon">
                                         <i className="ion ion-person-add" />
                                     </div>
-                                    <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
+                                    <Link to="/admin/bill" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
                                 </div>
                             </div>
                             {/* ./col */}
@@ -93,16 +97,12 @@ function HomePage(props) {
                             </div>
                             {/* ./col */}
                         </div>
-
                     </div>{/* /.container-fluid */}
                 </section>
                 {/* /.content */}
             </div>
             <Footer />
         </div>
-
     );
 }
-
-
 export default HomePage;

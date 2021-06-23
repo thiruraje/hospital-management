@@ -12,6 +12,7 @@ const doctorSchema = new mongoose.Schema({
     gender: { type: String, required: true },
     type: { type: String, required: true },
     password: { type: String, required: true },
+    createdAt: {type: Date, default: Date.now}
 });
 
 const doctorModel = mongoose.model('Doctor', doctorSchema);
