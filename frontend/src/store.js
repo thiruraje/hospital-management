@@ -12,7 +12,8 @@ import {
 import {
   doctorSigninReducer,
   addPatientReducer,
-  addCheckupReducer
+  addRegularPatinetReducer,
+  addAdmitedPatinetReducer
 } from './reducers/doctorReducer';
 
 const adminInfo = Cookie.getJSON('adminInfo') || null;
@@ -30,7 +31,8 @@ const reducer = combineReducers({
   addRoom:addRoomReducer,
   doctorSignin:doctorSigninReducer,
   addPatient:addPatientReducer,
-  checkupDetail:addCheckupReducer
+  regularPatientCheckup:addRegularPatinetReducer,
+  admitedPatientCheckup:addAdmitedPatinetReducer
  
 });
 

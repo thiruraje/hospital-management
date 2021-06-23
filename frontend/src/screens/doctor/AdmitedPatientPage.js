@@ -4,27 +4,24 @@ import Footer from './layout/Footer';
 
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addCheckupDetail } from '../../action/doctorAction';
+import { addAdmitedPatientCheckup } from '../../action/doctorAction';
+import { useHistory } from "react-router-dom";
 
-function CheckupDetailPage(props) {
+function AdmitedPatientPage(props) {
+    const history = useHistory();
     const dispatch = useDispatch();
     const doctorSigin = useSelector(state => state.doctorSignin);
     const { loading, doctorInfo, error } = doctorSigin;
 
-
     useEffect(() => {
         fetchPatients();
     }, []);
-
     const [patients, setPatinet] = useState([]);
     const [patientId, setPatinetId] = useState([]);
-    const [fee, setFee] = useState([]);
-
-    const [inputList, setInputList] = useState([{ problem: "", solution: "" }]);
-
+    const [inputList, setInputList] = useState([]);
     const fetchPatients = async () => {
         const doctor_id = encodeURIComponent(doctorInfo._id);
-        const data = await fetch(`http://localhost:4000/api/doctor/patients/${doctor_id}`);
+        const data = await fetch(`http://localhost:4000/api/doctor/admited-patients/${doctor_id}`);
         const patients = await data.json();
         setPatinet(patients);
     };
@@ -46,13 +43,40 @@ function CheckupDetailPage(props) {
 
     // handle click event of the Add button
     const handleAddClick = () => {
-        setInputList([...inputList, { problem: "", solution: "" }]);
+        setInputList([...inputList, { medicine: "", cost: 0 }]);
     };
+
     const mySubmitHandler = (event) => {
         event.preventDefault();
-        dispatch(addCheckupDetail(patientId,fee, inputList));
-        props.history.push('/doctor/home');
+        var total_fee = 0;
+        inputList.map(function (item) {
+            total_fee = total_fee + Number(item.cost);
+        });
+        dispatch(addAdmitedPatientCheckup(patientId,5000+total_fee, inputList));
+        history.push('/doctor/viewPatient');
     }
+    const patientChange = (e) => {
+        setPatinetId(e.target.value)
+        fetchAdmitedPatientDetail(e.target.value);
+
+    }
+    const fetchAdmitedPatientDetail = async (patientId) => {
+        const patient_id = encodeURIComponent(patientId);
+        const data = await fetch(`http://localhost:4000/api/doctor/admited-patient-medi-info/${patient_id}`);
+        const admited_patient_info = await data.json();
+        if (admited_patient_info) {
+            const detail = [];
+            admited_patient_info.detail.map(function (item) {
+                detail.push({
+                    medicine:item.medicine,
+                    cost: item.cost
+                });
+            });
+            setInputList([...inputList, ...detail]);
+        }
+
+    };
+
     return (
         <div class="wrapper">
             <Header />
@@ -63,7 +87,7 @@ function CheckupDetailPage(props) {
                     <div className="container-fluid">
                         <div className="row mb-2">
                             <div className="col-sm-6">
-                                <h1 className="m-0 text-dark">Checkup Details</h1>
+                                <h1 className="m-0 text-dark">Admited Patient info</h1>
                             </div>{/* /.col */}
 
                         </div>{/* /.row */}
@@ -82,7 +106,7 @@ function CheckupDetailPage(props) {
                                                 <div className="row">
                                                     <div className="col-sm-6">
                                                         <div className="col-sm-12">
-                                                            <label>Patient</label> <select name="patient" onChange={(e) => setPatinetId(e.target.value)} className="form-control">
+                                                            <label>Patient</label> <select name="patient" onChange={patientChange} className="form-control">
                                                                 <option value>Select patient</option>
                                                                 {
                                                                     patients.map(function (patient) {
@@ -97,7 +121,7 @@ function CheckupDetailPage(props) {
                                                         <div className="col-sm-12">
                                                             <div className="form-group">
                                                                 <div className="col-sm-12">
-                                                                    <label>Fee's</label> <input type="number" className="form-control" name="fee" onChange={(e) => setFee(e.target.value)}required />
+                                                                    <label>Room Fee's</label> <input type="number" className="form-control" name="fee" value="5000" readOnly={true} />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -107,19 +131,17 @@ function CheckupDetailPage(props) {
                                                 <div className="row">
                                                     <div className="col-sm-4">
                                                         <div className="col-sm-12">
-                                                            <label>Problem</label>
+                                                            <label>Medicine</label>
                                                         </div>
                                                     </div>
                                                     <br></br>
                                                     <div className="col-sm-4">
                                                         <div className="form-group">
                                                             <div className="col-sm-12">
-                                                                <label>Solution</label>
+                                                                <label>Cost</label>
                                                             </div>
                                                         </div>
                                                     </div>
-
-
                                                 </div>
                                                 {inputList.map((x, i) => {
                                                     return (
@@ -129,9 +151,8 @@ function CheckupDetailPage(props) {
                                                                     <input
                                                                         type="text"
                                                                         className="form-control"
-                                                                        name="patient_age"
-                                                                        name="problem"
-                                                                        value={x.problem}
+                                                                        name="medicine"
+                                                                        value={x.medicine}
                                                                         onChange={e => handleInputChange(e, i)}
                                                                     />
                                                                 </div>
@@ -141,11 +162,11 @@ function CheckupDetailPage(props) {
                                                                 <div className="form-group">
                                                                     <div className="col-sm-12">
                                                                         <input
-                                                                            type="text"
+                                                                            type="number"
                                                                             className="form-control"
-                                                                            value={x.solution}
+                                                                            value={x.cost}
                                                                             onChange={e => handleInputChange(e, i)}
-                                                                            name="solution"
+                                                                            name="cost"
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -166,6 +187,7 @@ function CheckupDetailPage(props) {
                                                         </div>
                                                     );
                                                 })}
+
                                                 <br />
                                                 <div align="center">
                                                     <button type="submit" className="btn btn-info">Save</button>
@@ -178,6 +200,7 @@ function CheckupDetailPage(props) {
                         </div>
                     </div>
 
+
                 </section>
                 {/* /.content */}
             </div>
@@ -187,4 +210,4 @@ function CheckupDetailPage(props) {
 
 }
 
-export default CheckupDetailPage;
+export default AdmitedPatientPage;

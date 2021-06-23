@@ -8,9 +8,12 @@ import {
     PATIENT_ADD_REQUEST,
     PATIENT_ADD_SUCCESS,
     PATIENT_ADD_FAIL,
-    CHECKUP_ADD_REQUEST,
-    CHECKUP_ADD_SUCCESS,
-    CHECKUP_ADD_FAIL,
+    REGULAR_CHECKUP_ADD_REQUEST,
+    REGULAR_CHECKUP_ADD_SUCCESS,
+    REGULAR_CHECKUP_ADD_FAIL,
+    ADMITED_CHECKUP_ADD_REQUEST,
+    ADMITED_CHECKUP_ADD_SUCCESS,
+    ADMITED_CHECKUP_ADD_FAIL,
 
 } from "../constants/Constants";
 
@@ -40,15 +43,25 @@ const addPatient = (name, age, mobile, gender, heigth, weigth, address, conditio
     }
 }
 
-const addCheckupDetail = (patientId,fee, inputList) => async (dispatch, getState) => {
+const addRegularPatientCheckup = (patientId,fee, inputList) => async (dispatch, getState) => {
 
-    dispatch({ type: CHECKUP_ADD_REQUEST });
+    dispatch({ type: REGULAR_CHECKUP_ADD_REQUEST });
     try {
-        await Axios.post("http://localhost:4000/api/doctor/checkupdetails", { patientId,fee, inputList });
-        dispatch({ type: CHECKUP_ADD_SUCCESS, payload: true });
+        await Axios.post("http://localhost:4000/api/doctor/regular-patient", { patientId,fee, inputList });
+        dispatch({ type: REGULAR_CHECKUP_ADD_SUCCESS, payload: true });
 
     } catch (error) {
-        dispatch({ type: CHECKUP_ADD_FAIL, payload: error.message });
+        dispatch({ type: REGULAR_CHECKUP_ADD_FAIL, payload: error.message });
+    }
+}
+
+const addAdmitedPatientCheckup = (patientId,fee, inputList) => async (dispatch, getState) => {
+    dispatch({ type: ADMITED_CHECKUP_ADD_REQUEST });
+    try {
+        await Axios.post("http://localhost:4000/api/doctor/admited-patient", { patientId,fee, inputList });
+        dispatch({ type: ADMITED_CHECKUP_ADD_SUCCESS, payload: true });
+    } catch (error) {
+        dispatch({ type: ADMITED_CHECKUP_ADD_FAIL, payload: error.message });
     }
 }
 
@@ -58,4 +71,4 @@ const doctorLogout = () => (dispatch) => {
     dispatch({ type: DOCTOR_LOGOUT })
 }
 
-export { signin, doctorLogout, addPatient, addCheckupDetail };
+export { signin, doctorLogout, addPatient, addRegularPatientCheckup ,addAdmitedPatientCheckup};
