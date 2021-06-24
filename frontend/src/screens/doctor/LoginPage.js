@@ -1,12 +1,12 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { signin } from '../../action/doctorAction';
+import { useHistory } from "react-router-dom";
 
 function LoginPage(props) {
+    const history = useHistory();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
@@ -15,7 +15,7 @@ function LoginPage(props) {
 
     useEffect(() => {
         if (doctorInfo) {
-            props.history.push('/doctor/home');
+            history.push('/doctor/home');
         }
         return () => {
             //

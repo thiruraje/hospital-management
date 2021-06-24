@@ -21,10 +21,10 @@ function HomePage(props) {
     const fetchDatas = async () => {
         var data = await fetch('http://localhost:4000/api/admin/dashboard-data');
         var datas = await data.json();
-        setDoctorCount(datas.doctors.count);
-        setRoomCount(datas.rooms.count);
-        setPatientCount(datas.patients.count)
-        setIncome(datas.income.total_fee)
+        setDoctorCount(datas.doctors);
+        setRoomCount(datas.rooms);
+        setPatientCount(datas.patients)
+        setIncome(datas.income)
     };
 
     return (
@@ -46,7 +46,12 @@ function HomePage(props) {
                                 {/* small box */}
                                 <div className="small-box bg-success">
                                     <div className="inner">
-                                        <h3>{income}<sup style={{ fontSize: 20 }}>₹</sup></h3>
+                                    {
+                                            income != null ?
+                                            <h3>{income.total_fee}<sup style={{ fontSize: 20 }}>₹</sup></h3> :
+                                            <h3>0<sup style={{ fontSize: 20 }}>₹</sup></h3>
+                                        }
+                                        
                                         <p>Total Income</p>
                                     </div>
                                     <div className="icon">
@@ -59,7 +64,11 @@ function HomePage(props) {
                                 {/* small box */}
                                 <div className="small-box bg-warning">
                                     <div className="inner">
-                                        <h3>{Doctor_count}</h3>
+                                        {
+                                            Doctor_count != null ?
+                                                <h3>{Doctor_count.count}</h3> :
+                                                <h3>0</h3>
+                                        }
                                         <p>Doctor Details</p>
                                     </div>
                                     <div className="icon">
@@ -72,7 +81,11 @@ function HomePage(props) {
                                 {/* small box */}
                                 <div className="small-box bg-warning">
                                     <div className="inner">
-                                        <h3>{patients_count}</h3>
+                                        {
+                                            patients_count != null ?
+                                                <h3>{patients_count.count}</h3> :
+                                                <h3>0</h3>
+                                        }
                                         <p>Patients Details</p>
                                     </div>
                                     <div className="icon">
@@ -86,8 +99,13 @@ function HomePage(props) {
                                 {/* small box */}
                                 <div className="small-box bg-danger">
                                     <div className="inner">
-                                        <h3>{room_count}</h3>
-                                        <p>Room Details</p>
+                                        {
+                                            room_count != null ?
+                                                <h3>{room_count.count}</h3> :
+                                                <h3>0</h3>
+                                        }
+
+                                        <p>Available Rooms</p>
                                     </div>
                                     <div className="icon">
                                         <i className="ion ion-pie-graph" />

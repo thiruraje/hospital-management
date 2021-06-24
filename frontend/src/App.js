@@ -23,8 +23,12 @@ import DoctorRegister from './screens/doctor/RegisterPage';
 import DoctorHomePage from './screens/doctor/HomePage';
 import AddPatientPage from './screens/doctor/patient/AddPatientPage'
 import ViewPatientPage from './screens/doctor/patient/ViewPatientPage'
-import CheckupDetailPage from './screens/doctor/CheckupDetailPage'
+import RegularCheckPage from './screens/doctor/RegularCheckPage'
+import AdmitedPatientCheckPage from './screens/doctor/AdmitedPatientPage'
+
 import PatientDetailPage from './screens/doctor/patient/PatientDetailPage'
+import AdmitedPatientDetailPage from './screens/doctor/patient/AdmitedPatientDetailPage'
+
 
 
 
@@ -50,8 +54,10 @@ function App() {
             <Route path="/doctor/home" component={DoctorHomePage} />
             <Route path="/doctor/addPatient" component={AddPatientPage} />
             <Route path="/doctor/viewPatient" component={ViewPatientPage} />
-            <Route path="/doctor/checkupdetail" component={CheckupDetailPage} />
+            <Route path="/doctor/regular-checkup" component={RegularCheckPage} />
+            <Route path="/doctor/admited-patient-checkup" component={AdmitedPatientCheckPage} />
             <Route path="/doctor/patientdetail/:id" component={PatientDetailPage} />
+            <Route path="/doctor/admited-patient-detail/:id" component={AdmitedPatientDetailPage} />
             <Route path="/" exact={true} component={Intro} />
           </div>
         </main>

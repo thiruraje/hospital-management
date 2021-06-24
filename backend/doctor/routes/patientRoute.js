@@ -1,6 +1,10 @@
+const mongoose = require('mongoose');
 var express = require('express');
+const ObjectId = mongoose.Types.ObjectId;
 const Patient = require('../model/patientModel');
 const Checkup = require('../model/checkupDetailModel');
+const AdmitedPatient = require('../model/admitedPatientModel');
+
 
 const Room = require('../../admin/model/roomModel');
 
@@ -34,7 +38,29 @@ router.post('/createpatient', async (req, res) => {
 router.get('/patients/:doctor_id', async (req, res) => {
     try {
         const patients = await Patient.find({ 'doctor': req.params.doctor_id });
+
         res.send(patients);
+    } catch (error) {
+        res.send({ message: error.message });
+    }
+});
+
+router.get('/regular-patients/:doctor_id', async (req, res) => {
+    try {
+        const regular_patients = await Patient.aggregate([
+            { $match: { $and: [{ doctor: ObjectId(req.params.doctor_id) }, { condition: "normal" }] } },
+        ]);
+        res.send(regular_patients);
+    } catch (error) {
+        res.send({ message: error.message });
+    }
+});
+router.get('/admited-patients/:doctor_id', async (req, res) => {
+    try {
+        const regular_patients = await Patient.aggregate([
+            { $match: { $and: [{ doctor: ObjectId(req.params.doctor_id) }, { condition: "admit" }] } },
+        ]);
+        res.send(regular_patients);
     } catch (error) {
         res.send({ message: error.message });
     }
@@ -59,22 +85,56 @@ router.get('/roomname/:roomId', async (req, res) => {
     }
 });
 
-router.post('/checkupdetails', async (req, res) => {
-
+router.post('/regular-patient', async (req, res) => {
     try {
         var datas = req.body.inputList;
         const checkup = new Checkup({
             patient: req.body.patientId,
             fee: req.body.fee,
             detail: datas,
-            
         });
-        console.log(checkup)
         const newCheckup = await checkup.save();
-        res.sent(newCheckup)
-
     } catch (error) {
         console.log(error)
+        res.send({ message: error.message });
+    }
+});
+
+router.post('/admited-patient', async (req, res) => {
+    try {
+        const data = await AdmitedPatient.find({ patient: { $in: [ObjectId(req.body.patientId)] } });
+        if (data.length !== 0) {
+            console.log( req.body.patientId );
+            await AdmitedPatient.updateOne(
+                {patient:ObjectId(req.body.patientId)},
+                { $set: { fee: req.body.fee,detail: req.body.inputList,createdAt:new Date() }}
+            );
+        } else {
+            const admitedPatient = new AdmitedPatient({
+                patient: req.body.patientId,
+                fee: req.body.fee,
+                detail: req.body.inputList,
+            });
+            const newadmitedPatient = await admitedPatient.save();
+        }
+    } catch (error) {
+        console.log(error)
+        res.send({ message: error.message });
+    }
+});
+
+router.get('/admited-patient-medi-info/:patient_id', async (req, res) => {
+    try {
+        const admited_patient_info = await AdmitedPatient.findOne({ 'patient': req.params.patient_id });
+        if (admited_patient_info) {
+            res.send(admited_patient_info);
+        } else {
+            const empty = {
+                detail: [{ medicine: "", cost: 0 }]
+            }
+            res.send(empty);
+        }
+    } catch (error) {
         res.send({ message: error.message });
     }
 });
@@ -84,9 +144,22 @@ router.get('/patient-detail/:patient_id', async (req, res) => {
         const patient = await Patient.findOne({ '_id': req.params.patient_id });
         const checkups = await Checkup.find({ 'patient': req.params.patient_id });
         const data = {
-            patient : patient,
-            checkups : checkups
+            patient: patient,
+            checkups: checkups
+        }
+        res.send(data);
+    } catch (error) {
+        res.send({ message: error.message });
+    }
+});
 
+router.get('/admited-patient-detail/:patient_id', async (req, res) => {
+    try {
+        const patient = await Patient.findOne({ '_id': req.params.patient_id });
+        const checkups = await AdmitedPatient.findOne({ 'patient': req.params.patient_id });
+        const data = {
+            patient: patient,
+            checkups: checkups
         }
         res.send(data);
     } catch (error) {

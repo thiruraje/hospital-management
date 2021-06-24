@@ -68,9 +68,12 @@ function ViewPatientPage(props) {
                                                     <RoomNo roomId={patient.room} />
                                                 </div>
                                                 : "-"}</td>
-                                            <td>
-                                                <Link to={`/doctor/patientdetail/${patient._id}`}>Detail</Link>
+                                            <td>{
+                                                patient.condition === "admit" ?
+                                                    <Link to={`/doctor/admited-patient-detail/${patient._id}`}>Detail</Link> :
+                                                    <Link to={`/doctor/patientdetail/${patient._id}`}>Detail</Link>
 
+                                            }
                                             </td>
                                         </tr>
                                     ))

@@ -21,6 +21,7 @@ router.get('/dashboard-data', async (req, res) => {
         ]);
 
         var rooms = await Room.aggregate([
+            { $match: { is_occupied: false }},
             {
                 $group: {
                     _id: null,

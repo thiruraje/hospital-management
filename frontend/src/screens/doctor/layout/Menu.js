@@ -61,11 +61,18 @@ function Menu(props) {
 
                 </ul>
               </li>
+              <li className="nav-header">Check Up Entry</li>
               <li className="nav-item">
-                <Link className="nav-link" to="/doctor/checkupdetail">
+                <Link className="nav-link" to="/doctor/regular-checkup">
                   <i className="nav-icon fas fa-th" />
-                  Checkup' s</Link>
+                  RegularPatient </Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/doctor/admited-patient-checkup">
+                  <i className="nav-icon fas fa-th" />
+                  AdmitedPatient </Link>
+              </li>
+
               <li className="nav-header">------</li>
               <li className="nav-item">
                 <Link className="nav-link" to="/doctor/register">
