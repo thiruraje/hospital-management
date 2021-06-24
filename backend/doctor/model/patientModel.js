@@ -12,6 +12,7 @@ const patientSchema = new mongoose.Schema({
     address: { type: String, required: true },
     condition: { type: String, default: null },
     room: {type:Schema.Types.ObjectId, ref:'Room',default: null},
+    is_discharge: { type: Boolean, default: false },
     createdAt: {type: Date, default: Date.now}
     
 });

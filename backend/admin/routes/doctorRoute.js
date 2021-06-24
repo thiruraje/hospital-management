@@ -5,11 +5,10 @@ const ObjectId = mongoose.Types.ObjectId;
 const Doctor = require('../model/doctorModel');
 const Patient = require('../../doctor/model/patientModel');
 const Checkup = require('../../doctor/model/checkupDetailModel');
-
+const AdmitedPatient = require('../../doctor/model/admitedPatientModel');
 
 
 const router = express.Router();
-
 router.post('/createdoctor', async (req, res) => {
     try {
         const doctor = new Doctor({
@@ -43,31 +42,8 @@ router.get('/doctor-detail/:doctor_id', async (req, res) => {
     try {
         const doctor = await Doctor.findOne({ '_id': req.params.doctor_id });
         const patients = await Patient.find({ 'doctor': req.params.doctor_id });
-        const total_amount = await Patient.aggregate(
-            [
-                { $match: { doctor: ObjectId(req.params.doctor_id) } },
-                {
-                    $lookup:
-                    {
-                        from: "checkups",
-                        localField: "_id",
-                        foreignField: "patient",
-                        as: "checkups",
-                    }
-                },
-                {$unwind: {"path":'$checkups'}},
-                {
-                    $group:{
-                        _id:null,
-                        total_fee:{$sum: "$checkups.fee"},
-                        count: { $sum: 1 }
-                    },
-                },
-            ]
-        );
         const datas = {
             doctor: doctor,
-            total_amount : total_amount[0],
             patients: patients,
         }
 
@@ -77,11 +53,23 @@ router.get('/doctor-detail/:doctor_id', async (req, res) => {
     }
 });
 
-router.get('/patient-fee/:patient_id', async (req, res) => {
+router.get('/patient-fee/:condition/:patient_id', async (req, res) => {
     try {
-        const patient_fee = await Checkup.aggregate(
-            [
-                { $match: {patient: ObjectId(req.params.patient_id) } },
+        var patient_fee;
+        if( req.params.condition === "admit"){
+            patient_fee = await AdmitedPatient.aggregate([
+                { $match: { patient: ObjectId(req.params.patient_id) } },
+                {
+                    $group: {
+                        _id: null,
+                        total_fee: { $sum: "$fee" },
+                    },
+                },
+            ]
+            );
+        }else{
+            patient_fee =  await Checkup.aggregate([
+                { $match: { patient: ObjectId(req.params.patient_id) } },
                 {
                     $group: {
                         _id: "$patient",
@@ -89,11 +77,23 @@ router.get('/patient-fee/:patient_id', async (req, res) => {
                     },
                 },
             ]
-        );
+            );
+
+        }
         res.send(patient_fee[0]);
     } catch (error) {
         res.send({ message: error.message });
     }
+});
+
+router.get('/handled-doctor/:doctor_id', async (req, res) => {
+    try {
+        const doctor = await Doctor.findOne({ '_id': req.params.doctor_id });
+        res.send(doctor);
+    } catch (error) {
+        res.send({ message: error.message });
+    }
+    
 });
 
 module.exports = router;

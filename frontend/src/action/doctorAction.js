@@ -66,9 +66,19 @@ const addAdmitedPatientCheckup = (patientId,fee, inputList) => async (dispatch, 
 }
 
 
+const discharge = (patientId) => async (dispatch, getState) => {
+    console.log(patientId)
+    try {
+        await Axios.post("http://localhost:4000/api/doctor/admited-patient-discharge", { patientId });
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
 const doctorLogout = () => (dispatch) => {
     Cookie.remove("doctorInfo");
     dispatch({ type: DOCTOR_LOGOUT })
 }
 
-export { signin, doctorLogout, addPatient, addRegularPatientCheckup ,addAdmitedPatientCheckup};
+export { signin, doctorLogout, addPatient, addRegularPatientCheckup ,addAdmitedPatientCheckup , discharge};

@@ -37,10 +37,10 @@ function PatientBill(props) {
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
-                                <th scope="col">Age</th>
-                                <th scope="col">Gender</th>
+                                <th scope="col">Handled Doctor</th>
                                 <th scope="col">Address</th>
                                 <th scope="col">Admit/Normal</th>
+                                <th scope="col">Discharge/Not</th>
                                 <th scope="col">Fee's</th>
                             </tr>
                         </thead>
@@ -51,11 +51,21 @@ function PatientBill(props) {
                                         <tr key={patient._id}>
                                             <td>#</td>
                                             <td>{patient.name}</td>
-                                            <td>{patient.age}</td>
-                                            <td>{patient.gender}</td>
+                                            <td><Dooctor doctor_id={patient.doctor} /></td>
                                             <td>{patient.address}</td>
                                             <td>{patient.condition}</td>
-                                            <td><Fees patientId={patient._id} /></td>
+                                            {
+                                                patient.condition === "admit"?
+                                                (patient.is_discharge)?
+                                                
+                                                <td>Yes</td>:
+                                                <td>No</td>:
+                                                <td>-</td>
+                                                
+
+                                            }
+                                            
+                                            <td><Fees patientId={patient._id} patientCondition={patient.condition} /></td>
                                            
                                         </tr>
                                     ))
@@ -72,15 +82,32 @@ function PatientBill(props) {
     );
 }
 
+const Dooctor = props => {
+    const [name, setName] = useState("");
+    useEffect(() => {
+        console.log(props.doctor_id)
+        fetchDoctorName(props.doctor_id);
+        
+    }, []);
+    const fetchDoctorName = async (doctor_id) => {
+        const data = await fetch(`http://localhost:4000/api/admin/handled-doctor/${doctor_id}`);
+        const doctor = await data.json();
+        setName(doctor.name);
+    };
+    return (
+        <div>{name}</div>
+    );
+};
+
 const Fees = props => {
     const [fee, setFee] = useState("");
     useEffect(() => {
-        fetchPatientFee(props.patientId);
+        fetchPatientFee(props.patientId,props.patientCondition);
     }, []);
-    const fetchPatientFee = async (patientId) => {
-        const data = await fetch(`http://localhost:4000/api/admin/patient-fee/${patientId}`);
+    const fetchPatientFee = async (patientId,patientCondition) => {
+        const data = await fetch(`http://localhost:4000/api/admin/patient-fee/${patientCondition}/${patientId}`);
         const fee = await data.json();
-        setFee(fee['total_fee'])
+        setFee(fee.total_fee);
     };
     return (
         <div>{fee}</div>

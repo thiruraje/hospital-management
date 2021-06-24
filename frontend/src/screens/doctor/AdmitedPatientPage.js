@@ -52,13 +52,13 @@ function AdmitedPatientPage(props) {
         inputList.map(function (item) {
             total_fee = total_fee + Number(item.cost);
         });
-        dispatch(addAdmitedPatientCheckup(patientId,5000+total_fee, inputList));
+        dispatch(addAdmitedPatientCheckup(patientId, 5000 + total_fee, inputList));
         history.push('/doctor/viewPatient');
     }
     const patientChange = (e) => {
-        setPatinetId(e.target.value)
+        setInputList([]);
+        setPatinetId(e.target.value);
         fetchAdmitedPatientDetail(e.target.value);
-
     }
     const fetchAdmitedPatientDetail = async (patientId) => {
         const patient_id = encodeURIComponent(patientId);
@@ -68,15 +68,13 @@ function AdmitedPatientPage(props) {
             const detail = [];
             admited_patient_info.detail.map(function (item) {
                 detail.push({
-                    medicine:item.medicine,
+                    medicine: item.medicine,
                     cost: item.cost
                 });
             });
-            setInputList([...inputList, ...detail]);
+            setInputList([...detail]);
         }
-
     };
-
     return (
         <div class="wrapper">
             <Header />
@@ -106,7 +104,7 @@ function AdmitedPatientPage(props) {
                                                 <div className="row">
                                                     <div className="col-sm-6">
                                                         <div className="col-sm-12">
-                                                            <label>Patient</label> <select name="patient" onChange={patientChange} className="form-control">
+                                                            <label>Patient</label> <select name="patient" onChange={e => patientChange(e)} className="form-control">
                                                                 <option value>Select patient</option>
                                                                 {
                                                                     patients.map(function (patient) {
