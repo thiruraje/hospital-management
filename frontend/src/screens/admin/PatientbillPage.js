@@ -13,23 +13,45 @@ function PatientBill(props) {
     }, []);
 
     const [patients, setPatient] = useState([]);
+    const [filteredPatients, setFilteredPatients] = useState([]);
 
     const fetchDatas = async () => {
         var data = await fetch('http://localhost:4000/api/admin/patient-bill');
         var datas = await data.json();
         setPatient(datas.patients)
+        setFilteredPatients(datas.patients)
     };
-
+    const handlePatientType = (e)=>{
+        if(e.target.value !== ""){
+            const filteredData = patients.filter(patient => {
+                return patient.condition.toLowerCase().includes(e.target.value.toLowerCase());
+            })
+            setFilteredPatients(filteredData)
+        }else{
+            setFilteredPatients(patients)
+        }
+    }
+    
     return (
         <div class="wrapper">
             <Header />
             <Menu />
             <div className="content-wrapper">
-                <div className="content-header">
-                    <div className="container-fluid">
-                        <h1 className="m-0 text-dark">Patient's Bill</h1>
-                    </div>
-                </div>
+                <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Patient's Bill</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <select name="type"  onChange={handlePatientType} className="form-control">
+                                    <option value = "">Select patient type</option>
+                                    <option value = "admit">Admit</option>
+                                    <option value = "normal">Normal</option>
+                                </select>
+                            </ol>
+                        </div>
+                        </div>
+                
                 <br></br>
                 <section className="content">
                     <table class="table">
@@ -47,7 +69,7 @@ function PatientBill(props) {
                         <tbody>
                             {
                                 (patients.length != 0) ?
-                                    patients.map(patient => (
+                                filteredPatients.map(patient => (
                                         <tr key={patient._id}>
                                             <td>#</td>
                                             <td>{patient.name}</td>
@@ -57,14 +79,10 @@ function PatientBill(props) {
                                             {
                                                 patient.condition === "admit"?
                                                 (patient.is_discharge)?
-                                                
                                                 <td>Yes</td>:
                                                 <td>No</td>:
                                                 <td>-</td>
-                                                
-
                                             }
-                                            
                                             <td><Fees patientId={patient._id} patientCondition={patient.condition} /></td>
                                            
                                         </tr>
