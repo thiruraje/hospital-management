@@ -13,13 +13,11 @@ function DoctorDetailPage(props) {
         fetchDoctorDetail();
     }, []);
     const [doctorData, setDoctorData] = useState([]);
-    const [amount, setAmount] = useState([]);
     const [patientsData, setPatientsData] = useState([]);
     const fetchDoctorDetail = async () => {
         const data = await fetch(`http://localhost:4000/api/admin/doctor-detail/${id}`);
         const doctor_detail = await data.json();
         setDoctorData(doctor_detail.doctor);
-        setAmount(doctor_detail.total_amount);
         setPatientsData(doctor_detail.patients);
     };
 
@@ -70,14 +68,7 @@ function DoctorDetailPage(props) {
                                     <td style={{ textAlign: "left" }}>{doctorData.address}</td>
                                 </tr>
                                 <br></br>
-                                <tr>
-                                    <th style={{ textAlign: "left" }}>Total Amount : </th>
-                                    {
-                                         (patientsData.length != 0) ?
-                                         <td style={{ textAlign: "left" }}> {amount.total_fee}</td>:
-                                         <td style={{ textAlign: "left" }}> 0</td>
-                                    }
-                                </tr>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -90,6 +81,8 @@ function DoctorDetailPage(props) {
                                 <th scope="col">Date</th>
                                 <th scope="col">Patient Name</th>
                                 <th scope="col">Mobile</th>
+                                <th scope="col">Admit/Not</th>
+                                <th scope="col">Discharge/Not</th>
                                 <th scope="col">Fee's</th>
 
                             </tr>
@@ -103,7 +96,18 @@ function DoctorDetailPage(props) {
                                             <td>{formatter.format(Date.parse(patient.createdAt))}</td>
                                             <td>{patient.name}</td>
                                             <td>{patient.mobile}</td>
-                                            <td><Fees patientId={patient._id} /></td>
+                                            <td>{patient.condition}</td>
+                                            {
+                                                patient.condition === "admit"?
+                                                (patient.is_discharge)?
+                                                
+                                                <td>Yes</td>:
+                                                <td>No</td>:
+                                                <td>-</td>
+                                                
+
+                                            }
+                                            <td><Fees patientId={patient._id} patientCondition={patient.condition} /></td>
                                         </tr>
                                     ))
                                     :
@@ -125,12 +129,12 @@ function DoctorDetailPage(props) {
 const Fees = props => {
     const [fee, setFee] = useState("");
     useEffect(() => {
-        fetchPatientFee(props.patientId);
+        fetchPatientFee(props.patientId,props.patientCondition);
     }, []);
-    const fetchPatientFee = async (patientId) => {
-        const data = await fetch(`http://localhost:4000/api/admin/patient-fee/${patientId}`);
+    const fetchPatientFee = async (patientId,patientCondition) => {
+        const data = await fetch(`http://localhost:4000/api/admin/patient-fee/${patientCondition}/${patientId}`);
         const fee = await data.json();
-        setFee(fee['total_fee'])
+        setFee(fee.total_fee);
     };
     return (
         <div>{fee}</div>

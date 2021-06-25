@@ -5,8 +5,11 @@ import Footer from '../layout/Footer';
 import React, { useEffect, useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-function AdmitedPatientDetailPage(props) {
+import { discharge } from '../../../action/doctorAction';
 
+
+function AdmitedPatientDetailPage(props) {
+    const dispatch = useDispatch();
     const { id } = props.match.params
 
     useEffect(() => {
@@ -21,7 +24,10 @@ function AdmitedPatientDetailPage(props) {
         const patients_detail = await data.json();
         setPatientData(patients_detail.patient);
         setPatientCheckupInfo(patients_detail.checkups);
-        setPatientCheckupList(patients_detail.checkups.detail);
+        if(patients_detail.checkups !== null){
+            setPatientCheckupList(patients_detail.checkups.detail);
+        }
+        
     };
 
     const formatter = new Intl.DateTimeFormat("en-GB", {
@@ -29,16 +35,34 @@ function AdmitedPatientDetailPage(props) {
         month: "long",
         day: "2-digit"
     });
+    const handleDischarge = () => {
+        dispatch(discharge(patientData._id));
+        props.history.push('/doctor/viewPatient');
+    };
     return (
         <div>
             <Header />
             <Menu />
 
             <div className="content-wrapper">
-                <div className="content-header">
-                    <div className="container-fluid">
-                        <h1 className="m-0 text-dark">Admited Patient Details</h1>
-                    </div>{/* /.container-fluid */}
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Admited patient's details</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                {
+                                    (patientData.is_discharge)?
+                                    <h6>Discharged</h6>:
+                                    <button className="btn btn-danger" onClick={handleDischarge}>Discharge</button> 
+                                }
+                            
+                            </ol>
+                        </div>
+                        </div>
+                    </div>
                 </div>
                 <section className="content">
                     <div>
@@ -67,9 +91,15 @@ function AdmitedPatientDetailPage(props) {
                                 <br></br>
                                 <tr>
                                     <th style={{ textAlign: "left" }}>Total fee (Room + medicine's) : </th>
-                                    <td style={{ textAlign: "left" }}>{patientCheckupInfo.fee}</td>
+                                    {
+                                        patientCheckupInfo !== null ?
+
+                                            <td style={{ textAlign: "left" }}>{patientCheckupInfo.fee}</td> :
+                                            <td style={{ textAlign: "left" }}>5000</td>
+                                    }
+
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -84,14 +114,16 @@ function AdmitedPatientDetailPage(props) {
                         </thead>
                         <tbody>
                             {
+                                patientCheckupInfo !== null ?
                                     patientCheckupList.map(patient => (
                                         <tr>
                                             <td>#</td>
                                             <td>{patient.medicine}</td>
                                             <td>{patient.cost}</td>
                                         </tr>
-                                    ))
-                                   
+                                    )) :
+                                    <td>No data's found!!</td>
+
                             }
 
                         </tbody>

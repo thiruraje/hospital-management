@@ -48,7 +48,7 @@ function HomePage(props) {
                                     <div className="inner">
                                     {
                                             income != null ?
-                                            <h3>{income.total_fee}<sup style={{ fontSize: 20 }}>₹</sup></h3> :
+                                            <h3>{income}<sup style={{ fontSize: 20 }}>₹</sup></h3> :
                                             <h3>0<sup style={{ fontSize: 20 }}>₹</sup></h3>
                                         }
                                         

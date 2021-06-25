@@ -26,62 +26,109 @@ router.post('/createpatient', async (req, res) => {
         });
         const newPatient = await patient.save();
 
+        const find_last_patienst = await Patient.find({}).sort({
+            $natural: -1
+        }).limit(1);
+        if (req.body.condition === "admit") {
+            const admitedPatient = new AdmitedPatient({
+                patient: find_last_patienst[0]._id,
+                fee: 5000,
+                detail: [],
+            });
+            const newadmitedPatient = await admitedPatient.save();
+
+        }
+
+
         const room = await Room.findById(req.body.admitedRoonNo);
         room.is_occupied = true;
         const updatedRoom = await room.save();
+
+
+
         res.send(newPatient);
     } catch (error) {
-        res.send({ message: error.message });
+        res.send({
+            message: error.message
+        });
     }
 });
 
 router.get('/patients/:doctor_id', async (req, res) => {
     try {
-        const patients = await Patient.find({ 'doctor': req.params.doctor_id });
+        const patients = await Patient.find({
+            'doctor': req.params.doctor_id
+        });
 
         res.send(patients);
     } catch (error) {
-        res.send({ message: error.message });
+        res.send({
+            message: error.message
+        });
     }
 });
 
 router.get('/regular-patients/:doctor_id', async (req, res) => {
     try {
-        const regular_patients = await Patient.aggregate([
-            { $match: { $and: [{ doctor: ObjectId(req.params.doctor_id) }, { condition: "normal" }] } },
-        ]);
+        const regular_patients = await Patient.aggregate([{
+            $match: {
+                $and: [{
+                    doctor: ObjectId(req.params.doctor_id)
+                }, {
+                    condition: "normal"
+                }]
+            }
+        }, ]);
         res.send(regular_patients);
     } catch (error) {
-        res.send({ message: error.message });
+        res.send({
+            message: error.message
+        });
     }
 });
 router.get('/admited-patients/:doctor_id', async (req, res) => {
     try {
-        const regular_patients = await Patient.aggregate([
-            { $match: { $and: [{ doctor: ObjectId(req.params.doctor_id) }, { condition: "admit" }] } },
-        ]);
+        const regular_patients = await Patient.aggregate([{
+            $match: {
+                $and: [{
+                    doctor: ObjectId(req.params.doctor_id)
+                }, {
+                    condition: "admit"
+                }]
+            }
+        }, ]);
         res.send(regular_patients);
     } catch (error) {
-        res.send({ message: error.message });
+        res.send({
+            message: error.message
+        });
     }
 });
 
 
 router.get('/availablerooms', async (req, res) => {
     try {
-        const rooms = await Room.find({ 'is_occupied': false });
+        const rooms = await Room.find({
+            'is_occupied': false
+        });
         res.send(rooms);
     } catch (error) {
-        res.send({ message: error.message });
+        res.send({
+            message: error.message
+        });
     }
 });
 
 router.get('/roomname/:roomId', async (req, res) => {
     try {
-        const room = await Room.findOne({ '_id': req.params.roomId });
+        const room = await Room.findOne({
+            '_id': req.params.roomId
+        });
         res.send(room.no);
     } catch (error) {
-        res.send({ message: error.message });
+        res.send({
+            message: error.message
+        });
     }
 });
 
@@ -96,19 +143,29 @@ router.post('/regular-patient', async (req, res) => {
         const newCheckup = await checkup.save();
     } catch (error) {
         console.log(error)
-        res.send({ message: error.message });
+        res.send({
+            message: error.message
+        });
     }
 });
 
 router.post('/admited-patient', async (req, res) => {
     try {
-        const data = await AdmitedPatient.find({ patient: { $in: [ObjectId(req.body.patientId)] } });
+        const data = await AdmitedPatient.find({
+            patient: {
+                $in: [ObjectId(req.body.patientId)]
+            }
+        });
         if (data.length !== 0) {
-            console.log( req.body.patientId );
-            await AdmitedPatient.updateOne(
-                {patient:ObjectId(req.body.patientId)},
-                { $set: { fee: req.body.fee,detail: req.body.inputList,createdAt:new Date() }}
-            );
+            await AdmitedPatient.updateOne({
+                patient: ObjectId(req.body.patientId)
+            }, {
+                $set: {
+                    fee: req.body.fee,
+                    detail: req.body.inputList,
+                    createdAt: new Date()
+                }
+            });
         } else {
             const admitedPatient = new AdmitedPatient({
                 patient: req.body.patientId,
@@ -119,53 +176,91 @@ router.post('/admited-patient', async (req, res) => {
         }
     } catch (error) {
         console.log(error)
-        res.send({ message: error.message });
+        res.send({
+            message: error.message
+        });
     }
 });
 
 router.get('/admited-patient-medi-info/:patient_id', async (req, res) => {
     try {
-        const admited_patient_info = await AdmitedPatient.findOne({ 'patient': req.params.patient_id });
-        if (admited_patient_info) {
+        const admited_patient_info = await AdmitedPatient.findOne({
+            'patient': req.params.patient_id
+        });
+        if (admited_patient_info.detail.length !== 0) {
             res.send(admited_patient_info);
         } else {
             const empty = {
-                detail: [{ medicine: "", cost: 0 }]
+                detail: [{
+                    medicine: "",
+                    cost: 0
+                }]
             }
             res.send(empty);
         }
     } catch (error) {
-        res.send({ message: error.message });
+        res.send({
+            message: error.message
+        });
     }
 });
 
 router.get('/patient-detail/:patient_id', async (req, res) => {
     try {
-        const patient = await Patient.findOne({ '_id': req.params.patient_id });
-        const checkups = await Checkup.find({ 'patient': req.params.patient_id });
+        const patient = await Patient.findOne({
+            '_id': req.params.patient_id
+        });
+        const checkups = await Checkup.find({
+            'patient': req.params.patient_id
+        });
         const data = {
             patient: patient,
             checkups: checkups
         }
         res.send(data);
     } catch (error) {
-        res.send({ message: error.message });
+        res.send({
+            message: error.message
+        });
     }
 });
 
 router.get('/admited-patient-detail/:patient_id', async (req, res) => {
     try {
-        const patient = await Patient.findOne({ '_id': req.params.patient_id });
-        const checkups = await AdmitedPatient.findOne({ 'patient': req.params.patient_id });
+        const patient = await Patient.findOne({
+            '_id': req.params.patient_id
+        });
+        const checkups = await AdmitedPatient.findOne({
+            'patient': req.params.patient_id
+        });
         const data = {
             patient: patient,
             checkups: checkups
         }
         res.send(data);
     } catch (error) {
-        res.send({ message: error.message });
+        res.send({
+            message: error.message
+        });
     }
 });
 
+router.post('/admited-patient-discharge', async (req, res) => {
+    try {
+        console.log(req.body.patientId)
+        await Patient.updateOne({
+            _id: ObjectId(req.body.patientId)
+        }, {
+            $set: {
+                is_discharge: true
+            }
+        });
+
+    } catch (error) {
+        res.send({
+            message: error.message
+        });
+    }
+});
 
 module.exports = router;
