@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 var express = require('express');
-
-const Patient = require('../../doctor/model/patientModel');
+const ObjectId = mongoose.Types.ObjectId;
+const Patient = require('../model/patientModel');
 
 
 
 const router = express.Router();
 
 
-router.get('/patient-bill', async (req, res) => {
+router.get('/patient-bill/:doctorId', async (req, res) => {
     try {
-        const patients = await Patient.find({});
+        console.log(req.params.doctorId)
+        const patients = await Patient.find({doctor: ObjectId(req.params.doctorId)});
         var datas  = {
             patients : patients,
         }

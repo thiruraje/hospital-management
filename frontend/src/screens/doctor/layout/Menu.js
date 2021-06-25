@@ -75,7 +75,7 @@ function Menu(props) {
 
               <li className="nav-header">------</li>
               <li className="nav-item">
-                <Link className="nav-link" to="/doctor/register">
+                <Link className="nav-link" to="/doctor/bill">
                   <i className="nav-icon fas fa-th" />
                   Patients bill</Link>
               </li>
