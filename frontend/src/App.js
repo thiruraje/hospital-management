@@ -28,6 +28,8 @@ import AdmitedPatientCheckPage from './screens/doctor/AdmitedPatientPage'
 
 import PatientDetailPage from './screens/doctor/patient/PatientDetailPage'
 import AdmitedPatientDetailPage from './screens/doctor/patient/AdmitedPatientDetailPage'
+import DoctorBillPage from './screens/doctor/PatientbillPage';
+
 
 
 
@@ -58,6 +60,7 @@ function App() {
             <Route path="/doctor/admited-patient-checkup" component={AdmitedPatientCheckPage} />
             <Route path="/doctor/patientdetail/:id" component={PatientDetailPage} />
             <Route path="/doctor/admited-patient-detail/:id" component={AdmitedPatientDetailPage} />
+            <Route path="/doctor/bill" component={DoctorBillPage} />
             <Route path="/" exact={true} component={Intro} />
           </div>
         </main>

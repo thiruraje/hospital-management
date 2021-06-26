@@ -48,7 +48,7 @@ function ViewPatientPage(props) {
                         </div>
                         <div class="card-body">
                             <div class="tab-content p-0">
-                            <table class="table">
+                            <table  className="table table-borderless">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -87,7 +87,7 @@ function ViewPatientPage(props) {
                         </div>
                         <div class="card-body">
                             <div class="tab-content p-0">
-                            <table class="table">
+                            <table className="table table-borderless">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>

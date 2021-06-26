@@ -36,9 +36,7 @@ router.post('/createpatient', async (req, res) => {
                 detail: [],
             });
             const newadmitedPatient = await admitedPatient.save();
-
         }
-
 
         const room = await Room.findById(req.body.admitedRoonNo);
         room.is_occupied = true;
@@ -247,12 +245,19 @@ router.get('/admited-patient-detail/:patient_id', async (req, res) => {
 
 router.post('/admited-patient-discharge', async (req, res) => {
     try {
-        console.log(req.body.patientId)
+        const patint= await Patient.findOne({_id:req.body.patientId});
         await Patient.updateOne({
             _id: ObjectId(req.body.patientId)
         }, {
             $set: {
                 is_discharge: true
+            }
+        });
+        await Room.updateOne({
+            _id: ObjectId(patint.room)
+        }, {
+            $set: {
+                is_occupied: false
             }
         });
 

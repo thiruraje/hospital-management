@@ -7,6 +7,7 @@ const router = express.Router();
 router.get('/dashboard-data/:doctor_id', async (req, res) => {
     try {
         var patients = await Patient.find({'doctor':req.params.doctor_id} );
+        
         var data = {
             patients:patients
         }
