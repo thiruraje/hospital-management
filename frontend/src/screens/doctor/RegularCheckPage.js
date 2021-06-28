@@ -6,6 +6,8 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addRegularPatientCheckup } from '../../action/doctorAction';
 import { useHistory } from "react-router-dom";
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
 
 function RegularCheckPage(props) {
     const history = useHistory();
@@ -55,6 +57,12 @@ function RegularCheckPage(props) {
         dispatch(addRegularPatientCheckup(patientId,fee, inputList));
         history.push('/doctor/viewPatient');
     }
+    const patientChange = (event, value) =>{
+        if(value != null){
+            setPatinetId(value._id);
+        }
+       
+    }
     return (
         <div class="wrapper">
             <Header />
@@ -84,14 +92,15 @@ function RegularCheckPage(props) {
                                                 <div className="row">
                                                     <div className="col-sm-6">
                                                         <div className="col-sm-12">
-                                                            <label>Patient</label> <select name="patient" onChange={(e) => setPatinetId(e.target.value)} className="form-control">
-                                                                <option value>Select patient</option>
-                                                                {
-                                                                    patients.map(function (patient) {
-                                                                        return <option value={patient._id}>{patient.name}</option>;
-                                                                    })
-                                                                }
-                                                            </select>
+                                                        <label>Patient</label>
+                                                        <Autocomplete
+                                                            id="Select patient"
+                                                            options={patients}
+                                                            getOptionLabel={(option) => option.name}
+                                                            onChange={patientChange}
+                                                            style = {{ height : 50}}
+                                                            renderInput={(params) => <TextField {...params} size="small" label="Select Patient" variant="outlined" />}
+                                                        />
                                                         </div>
                                                     </div>
                                                     <br></br>

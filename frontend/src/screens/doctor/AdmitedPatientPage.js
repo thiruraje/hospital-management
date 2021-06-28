@@ -6,8 +6,15 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addAdmitedPatientCheckup } from '../../action/doctorAction';
 import { useHistory } from "react-router-dom";
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
+
 
 function AdmitedPatientPage(props) {
+    const [patients, setPatinet] = useState([]);
+    const [patientId, setPatinetId] = useState([]);
+    const [inputList, setInputList] = useState([]);
+
     const history = useHistory();
     const dispatch = useDispatch();
     const doctorSigin = useSelector(state => state.doctorSignin);
@@ -15,14 +22,13 @@ function AdmitedPatientPage(props) {
 
     useEffect(() => {
         fetchPatients();
-    }, []);
-    const [patients, setPatinet] = useState([]);
-    const [patientId, setPatinetId] = useState([]);
-    const [inputList, setInputList] = useState([]);
+    },[]);
+
     const fetchPatients = async () => {
         const doctor_id = encodeURIComponent(doctorInfo._id);
         const data = await fetch(`http://localhost:4000/api/doctor/admited-patients/${doctor_id}`);
         const patients = await data.json();
+        console.log(Object.keys(patients).map(key => patients[key].item))
         setPatinet(patients);
     };
 
@@ -55,11 +61,7 @@ function AdmitedPatientPage(props) {
         dispatch(addAdmitedPatientCheckup(patientId, 5000 + total_fee, inputList));
         history.push('/doctor/viewPatient');
     }
-    const patientChange = (e) => {
-        setInputList([]);
-        setPatinetId(e.target.value);
-        fetchAdmitedPatientDetail(e.target.value);
-    }
+   
     const fetchAdmitedPatientDetail = async (patientId) => {
         const patient_id = encodeURIComponent(patientId);
         const data = await fetch(`http://localhost:4000/api/doctor/admited-patient-medi-info/${patient_id}`);
@@ -75,6 +77,15 @@ function AdmitedPatientPage(props) {
             setInputList([...detail]);
         }
     };
+
+    const patientChange = (event, value) =>{
+        setInputList([]);
+        if(value != null){
+            setPatinetId(value._id);
+            fetchAdmitedPatientDetail(value._id);
+        }
+       
+    }
     return (
         <div class="wrapper">
             <Header />
@@ -87,6 +98,8 @@ function AdmitedPatientPage(props) {
                             <div className="col-sm-6">
                                 <h1 className="m-0 text-dark">Admited Patient info</h1>
                             </div>{/* /.col */}
+                           
+                           
 
                         </div>{/* /.row */}
                     </div>{/* /.container-fluid */}
@@ -104,14 +117,15 @@ function AdmitedPatientPage(props) {
                                                 <div className="row">
                                                     <div className="col-sm-6">
                                                         <div className="col-sm-12">
-                                                            <label>Patient</label> <select name="patient" onChange={e => patientChange(e)} className="form-control">
-                                                                <option value>Select patient</option>
-                                                                {
-                                                                    patients.map(function (patient) {
-                                                                        return <option value={patient._id}>{patient.name}</option>;
-                                                                    })
-                                                                }
-                                                            </select>
+                                                        <label>Patient</label>
+                                                        <Autocomplete
+                                                            id="Select patient"
+                                                            options={patients}
+                                                            getOptionLabel={(option) => option.name}
+                                                            onChange={patientChange}
+                                                            style = {{ height : 50}}
+                                                            renderInput={(params) => <TextField {...params} size="small" label="Select Patient" variant="outlined" />}
+                                                        />
                                                         </div>
                                                     </div>
                                                     <br></br>
