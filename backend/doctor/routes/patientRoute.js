@@ -92,6 +92,8 @@ router.get('/admited-patients/:doctor_id', async (req, res) => {
                     doctor: ObjectId(req.params.doctor_id)
                 }, {
                     condition: "admit"
+                },{
+                    is_discharge : false
                 }]
             }
         }, ]);

@@ -65,7 +65,7 @@ function Menu(props) {
               <li className="nav-item">
                 <Link className="nav-link" to="/doctor/regular-checkup">
                   <i className="nav-icon fas fa-th" />
-                  RegularPatient </Link>
+                  Regular Patient </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/doctor/admited-patient-checkup">
