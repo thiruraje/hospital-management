@@ -13,6 +13,8 @@ const patientSchema = new mongoose.Schema({
     condition: { type: String, default: null },
     room: {type:Schema.Types.ObjectId, ref:'Room',default: null},
     is_discharge: { type: Boolean, default: false },
+    bed_alloted_time: {type: Date, default: Date.now},
+    discharge_time: {type: Date, default: null},
     createdAt: {type: Date, default: Date.now}
     
 });

@@ -86,7 +86,7 @@ router.get('/regular-patients/:doctor_id', async (req, res) => {
 });
 router.get('/admited-patients/:doctor_id', async (req, res) => {
     try {
-        const regular_patients = await Patient.aggregate([{
+        const admited_patients = await Patient.aggregate([{
             $match: {
                 $and: [{
                     doctor: ObjectId(req.params.doctor_id)
@@ -97,7 +97,7 @@ router.get('/admited-patients/:doctor_id', async (req, res) => {
                 }]
             }
         }, ]);
-        res.send(regular_patients);
+        res.send(admited_patients);
     } catch (error) {
         res.send({
             message: error.message
@@ -252,7 +252,8 @@ router.post('/admited-patient-discharge', async (req, res) => {
             _id: ObjectId(req.body.patientId)
         }, {
             $set: {
-                is_discharge: true
+                is_discharge: true,
+                discharge_time : new Date(),
             }
         });
         await Room.updateOne({

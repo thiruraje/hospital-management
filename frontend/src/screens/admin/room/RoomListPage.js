@@ -4,17 +4,15 @@ import Menu from '../layout/Menu';
 import Footer from '../layout/Footer';
 
 function RoomListPage(props) {
-    useEffect(() => {
-        fetchRooms();
-    }, []);
-
     const [rooms, setItems] = useState([]);
 
-    const fetchRooms = async () => {
+    useEffect(async() => {
         const data = await fetch('http://localhost:4000/api/admin/rooms');
         const rooms = await data.json();
         setItems(rooms);
-    };
+    }, []);
+
+
     return (
         <div>
             <Header />

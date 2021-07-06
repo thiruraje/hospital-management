@@ -28,7 +28,8 @@ const adminRoomRoute  = require('./admin/routes/roomRoute');
 const adminDashboardRoute  = require('./admin/routes/dashboardRoute');
 const adminBillRoute  = require('./admin/routes/billRoute');
 
-
+const accountantAuthRoute  = require('./accountant/routes/authRoute');
+const account_Patient_Route  = require('./accountant/routes/patientRoute');
 
 const doctorAuthRoute  = require('./doctor/routes/authRoute');
 const doctorPatientRoute  = require('./doctor/routes/patientRoute');
@@ -50,6 +51,9 @@ app.use('/api/admin/', adminDoctorRoute);
 app.use('/api/admin/', adminRoomRoute);
 app.use('/api/admin/', adminDashboardRoute);
 app.use('/api/admin/', adminBillRoute);
+
+app.use('/api/accountant', accountantAuthRoute);
+app.use('/api/accountant', account_Patient_Route);
 
 
 

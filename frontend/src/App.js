@@ -1,22 +1,24 @@
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
-import Header from './screens/admin/layout/Header';
-import Menu from './screens/admin/layout/Menu';
-import Dashboard from './screens/admin/layout/Dashboard';
-import Footer from './screens/admin/layout/Footer';
 import Intro from './screens/Intro';
+
 import AdminLogin from './screens/admin/LoginPage';
 import AdminRegister from './screens/admin/RegisterPage';
 import AdminHomePage from './screens/admin/HomePage';
 import AdminBillPage from './screens/admin/PatientbillPage';
-
 import DoctorPage from './screens/admin/doctor/DoctorPage'
 import RoomPage from './screens/admin/room/RoomPage'
 import DoctorListPage from './screens/admin/doctor/DoctorListPage'
 import RoomListPage from './screens/admin/room/RoomListPage'
 import DoctorDetailPage from './screens/admin/doctor/DoctorDetailPage'
+
+import AccountantLogin from './screens/accountant/LoginPage';
+import AccountantHomePage from './screens/accountant/HomePage';
+import DailyPatient from './screens/accountant/DailyPatient';
+import AdmitedPatient from './screens/accountant/AdmitedPatient';
+
 
 import DoctorLogin from './screens/doctor/LoginPage';
 import DoctorRegister from './screens/doctor/RegisterPage';
@@ -25,15 +27,9 @@ import AddPatientPage from './screens/doctor/patient/AddPatientPage'
 import ViewPatientPage from './screens/doctor/patient/ViewPatientPage'
 import RegularCheckPage from './screens/doctor/RegularCheckPage'
 import AdmitedPatientCheckPage from './screens/doctor/AdmitedPatientPage'
-
 import PatientDetailPage from './screens/doctor/patient/PatientDetailPage'
 import AdmitedPatientDetailPage from './screens/doctor/patient/AdmitedPatientDetailPage'
 import DoctorBillPage from './screens/doctor/PatientbillPage';
-
-
-
-
-
 
 function App() {
   return (
@@ -50,6 +46,12 @@ function App() {
             <Route path="/admin/viewRooms" component={RoomListPage} />
             <Route path="/admin/register" component={AdminRegister} />
             <Route path="/admin/login" component={AdminLogin} />
+
+            <Route path="/accountant/login" component={AccountantLogin} />
+            <Route path="/accountant/home" component={AccountantHomePage} />
+            <Route path="/accountant/daily-patient" component={DailyPatient} />
+            <Route path="/accountant/admited-patient" component={AdmitedPatient} />
+
 
             <Route path="/doctor/login" component={DoctorLogin} />
             <Route path="/doctor/register" component={DoctorRegister} />
