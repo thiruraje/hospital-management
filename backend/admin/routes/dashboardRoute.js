@@ -42,6 +42,7 @@ router.get('/dashboard-data', async (req, res) => {
         ]);
         var total_income = 0;
         const daily_income = await Checkup.aggregate([
+            { $match : { is_paid : true } },
             {
                 $group: {
                     _id: null,
@@ -51,6 +52,7 @@ router.get('/dashboard-data', async (req, res) => {
         ]
         );
         const admited_patients_fee = await AdmitedPatient.aggregate([
+            { $match : { is_paid : true } },
             {
                 $group: {
                     _id: null,

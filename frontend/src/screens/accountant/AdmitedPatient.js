@@ -11,7 +11,6 @@ import axios from "axios";
 function AdmitedPatient(props) {
 
     const [patients, setPatient] = useState([]);
-    const [datas, setDatas] = useState([]);
 
 
     useEffect(() => {
@@ -23,14 +22,6 @@ function AdmitedPatient(props) {
         const patients_data = await data.json();
         setPatient(patients_data);
 
-        let tmp = []
-        for (var i = 0; i < patients_data.length; i++) {
-            tmp.push({
-                id:patients_data.patient,
-                ispaid:patients_data.is_paid,
-            })
-        }
-        setDatas(tmp)
     }
 
     const handleChange = (index, patientId)=>{
