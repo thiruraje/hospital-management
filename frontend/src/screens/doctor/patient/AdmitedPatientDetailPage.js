@@ -60,7 +60,9 @@ function AdmitedPatientDetailPage(props) {
                                 }
                             
                             </ol>
+                            
                         </div>
+                        
                         </div>
                     </div>
                 </div>
@@ -90,7 +92,7 @@ function AdmitedPatientDetailPage(props) {
                                 </tr>
                                 <br></br>
                                 <tr>
-                                    <th style={{ textAlign: "left" }}>Total fee (Room + medicine's) : </th>
+                                <th style={{ textAlign: "left" }}>Total fee (Room + medicine's) : </th>
                                     {
                                         patientCheckupInfo !== null ?
 
@@ -99,7 +101,18 @@ function AdmitedPatientDetailPage(props) {
                                     }
 
                                 </tr>
-
+                                <br></br>
+                                {
+                                    (patientData.is_discharge)?
+                                    <tr>
+                                        <th style={{ textAlign: "left" }}>Discharge date : </th>
+                                        
+                                        <td style={{ textAlign: "left" }}>{formatter.format(Date.parse(patientData.discharge_time))}</td> 
+                                    </tr> :
+                                    <tr></tr>
+                                    
+                                }
+                               
                             </tbody>
                         </table>
                     </div>

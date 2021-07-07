@@ -15,7 +15,10 @@ router.post('/signin', async (req, res) => {
         email: signinAdmin.email,
       });
     } else {
-      res.status(401).send({ message: 'Invalid Email or Password.' });
+      var err = {};
+      err.message = 'Not found'
+      err.status = 404;
+      res.status(err.status).json(err);
     }
   });
 

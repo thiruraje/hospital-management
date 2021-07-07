@@ -9,6 +9,11 @@ import {
   addRoomReducer
 } from './reducers/adminReducer';
 
+
+import {
+  accountantSigninReducer
+} from './reducers/accountantReducer';
+
 import {
   doctorSigninReducer,
   addPatientReducer,
@@ -17,13 +22,16 @@ import {
 } from './reducers/doctorReducer';
 
 const adminInfo = Cookie.getJSON('adminInfo') || null;
+const accountantInfo = Cookie.getJSON('accountantInfo') || null;
 const doctorInfo = Cookie.getJSON('doctorInfo') || null;
 
 
 const initialState = {
   doctorSignin: { doctorInfo },
   adminSignin: { adminInfo },
+  accountantSignin: { accountantInfo },
 };
+
 const reducer = combineReducers({
   
   adminSignin: adminSigninReducer,
@@ -32,7 +40,8 @@ const reducer = combineReducers({
   doctorSignin:doctorSigninReducer,
   addPatient:addPatientReducer,
   regularPatientCheckup:addRegularPatinetReducer,
-  admitedPatientCheckup:addAdmitedPatinetReducer
+  admitedPatientCheckup:addAdmitedPatinetReducer,
+  accountantSignin:accountantSigninReducer
  
 });
 

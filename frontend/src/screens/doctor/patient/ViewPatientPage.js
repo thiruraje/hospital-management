@@ -9,17 +9,14 @@ import { Link } from 'react-router-dom';
 function ViewPatientPage(props) {
     const doctorSigin = useSelector(state => state.doctorSignin);
     const { loading, doctorInfo, error } = doctorSigin;
-    useEffect(() => {
-        fetchPatients();
-    }, []);
-
     const [patients, setPatinet] = useState([]);
-    const fetchPatients = async () => {
+    useEffect( async () => {
         const doctor_id = encodeURIComponent(doctorInfo._id);
         const data = await fetch(`http://localhost:4000/api/doctor/patients/${doctor_id}`);
         const patients = await data.json();
         setPatinet(patients);
-    };
+    },[patients]);
+
     return (
         <div>
             <Header />

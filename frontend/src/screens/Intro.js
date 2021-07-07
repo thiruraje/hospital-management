@@ -11,6 +11,7 @@ class Intro extends React.Component {
                 <div class="flex-center position-ref full-height">
                     <div class="top-right links">
                         <a href="/admin/login">Admin</a>
+                        <a href="/accountant/login">Accountant</a>
                         <a href="/doctor/login">Doctor</a>
                     </div>
                     <div class="content">

@@ -4,23 +4,24 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { signin } from '../../action/adminAction';
+import { signin } from '../../action/accountantAction';
 
 
 function LoginPage(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
-    const adminSignin = useSelector(state => state.adminSignin);
-    const { loading, adminInfo, error } = adminSignin;
+    const accountantSignin = useSelector(state => state.accountantSignin);
+    const { loading, accountantInfo, error } = accountantSignin;
+
     useEffect(() => {
-        if (adminInfo) {
-            props.history.push('/admin/home');
+        if (accountantInfo) {
+            props.history.push('/accountant/home');
         }
         return () => {
             //
         };
-    }, [adminInfo,error]);
+    }, [accountantInfo,error]);
 
     const mySubmitHandler = (event) => {
         event.preventDefault();
@@ -37,7 +38,6 @@ function LoginPage(props) {
                     <div className="form-group ">
                         <label>Email address</label>
                         <input type="email" className="form-control" onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" required />
-                        <span className="help-block">{error ? "Invalid username and password":""}</span>
                     </div>
                     <div className="form-group">
                         <label>Password</label>

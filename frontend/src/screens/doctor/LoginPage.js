@@ -36,6 +36,7 @@ function LoginPage(props) {
                         <div className="form-group">
                             <label>Email address</label>
                             <input type="email" className="form-control" onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" />
+                            <span className="help-block">{error ? "Invalid username and password":""}</span>
                         </div>
 
                         <div className="form-group">

@@ -8,18 +8,14 @@ import { Link } from 'react-router-dom';
 
 function DoctorListPage(props) {
 
-
-    useEffect(() => {
-        fetchDoctors();
-    }, []);
-
     const [doctors, setItems] = useState([]);
 
-    const fetchDoctors = async () => {
+    useEffect(async() => {
         const data = await fetch('http://localhost:4000/api/admin/doctors');
         const doctors = await data.json();
         setItems(doctors);
-    };
+    }, []);
+
     return (
 
         <div>
