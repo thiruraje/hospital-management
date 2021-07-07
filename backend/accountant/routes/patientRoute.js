@@ -38,4 +38,22 @@ router.get('/admited-patients', async (req, res) => {
     }
 });
 
+router.post('/admited-patient-paid-update', async (req, res) => {
+    try {
+        
+        const adPatient = await AdmitedPatient.updateOne({
+            patient: ObjectId(req.body.patientId)
+        }, {
+            $set: {
+                is_paid:req.body.status
+            }
+        });
+        res.send(adPatient)
+    } catch (error) {
+        res.send({
+            message: error.message
+        });
+    }
+});
+
 module.exports = router;

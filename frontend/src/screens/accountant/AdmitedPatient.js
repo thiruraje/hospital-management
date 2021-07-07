@@ -5,26 +5,57 @@ import Menu from './layout/Menu';
 import Footer from './layout/Footer';
 import { Link } from 'react-router-dom';
 import Switch from "react-switch";
+import axios from "axios";
 
 
 function AdmitedPatient(props) {
 
     const [patients, setPatient] = useState([]);
-    const [checked, setChecked] = useState(false);
+    const [datas, setDatas] = useState([]);
 
-    useEffect(async() => {
-        const data = await fetch('http://localhost:4000/api/accountant/admited-patients');
-        const patients = await data.json();
-        setPatient(patients);
+
+    useEffect(() => {
+        fetchData()
+    //     
     }, []);
+    const fetchData = async()=>{
+        const data = await fetch('http://localhost:4000/api/accountant/admited-patients');
+        const patients_data = await data.json();
+        setPatient(patients_data);
 
-    const handleChange = () =>{
-        if(checked){
-            setChecked(false)
-        }else{
-            setChecked(true)
+        let tmp = []
+        for (var i = 0; i < patients_data.length; i++) {
+            tmp.push({
+                id:patients_data.patient,
+                ispaid:patients_data.is_paid,
+            })
         }
-        
+        setDatas(tmp)
+    }
+
+    const handleChange = (index, patientId)=>{
+        if(patients[index].is_paid){
+            let newArr = [...patients]
+            newArr[index].is_paid = false
+            setPatient(newArr)
+            updatePaidStatus(patientId,false);
+        }else{
+            let newArr = [...patients]
+            newArr[index].is_paid = true
+            setPatient(newArr)
+            updatePaidStatus(patientId,true);
+        }
+    }
+    const updatePaidStatus = async (patientId,status)=>{
+        axios
+        .post(`http://localhost:4000/api/accountant/admited-patient-paid-update`,{ patientId,status })
+        .then(result => {
+            console.log(result);
+        })
+        .catch(error =>{
+            console.log(error);
+        }
+        );
     }
 
     return (
@@ -42,7 +73,7 @@ function AdmitedPatient(props) {
                     </div>{/* /.container-fluid */}
                 </div>
                 <section className="content">
-
+                
                     <table class="table">
                         <thead>
                             <tr>
@@ -55,14 +86,18 @@ function AdmitedPatient(props) {
                         </thead>
                         <tbody>
                             {
-                                patients.map(patient => (
+                                patients.map((patient,index) => (
                                     <tr key={patient._id}>
                                         <td>#</td>
                                         <td><PatientName patient_id ={patient.patient}/></td>
                                         <td>{patient.fee}</td>
                                         <td><Discharge patient_id ={patient.patient}/></td>
                                         <td>
-                                        <Switch onChange={handleChange} checked={checked} />
+                                        <Switch 
+                                            checked={patient.is_paid}  
+                                            onChange={()=>handleChange(index, patient.patient)}
+                                        />
+                                    
                                         </td>
                                     </tr>
                                 ))

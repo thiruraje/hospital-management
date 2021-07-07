@@ -11,6 +11,7 @@ const admitedPatientSchema = new mongoose.Schema({
     patient: {type:Schema.Types.ObjectId, ref:'Patient'},
     fee: { type: Number, required: true },
     detail: [chectupDetailSchema],
+    is_paid: { type: Boolean, default: false },
     createdAt: {type: Date, default: Date.now}
 });
 
