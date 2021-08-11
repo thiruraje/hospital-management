@@ -8,47 +8,20 @@ const DailyPatient = require('../../doctor/model/checkupDetailModel');
 
 const router = express.Router();
 
-router.get('/admited-patient-info/:patientId', async (req, res) => {
-    try {
-        const admited_patients = await Patient.aggregate([{
-            $match: {
-                $and: [{
-                    _id: ObjectId(req.params.patientId)
-                },{
-                    condition: "admit"
-                }]
-            }
-        }, ]);
-        res.send(admited_patients[0]);
-    } catch (error) {
-        res.send({
-            message: error.message
-        });
-    }
-});
-
-router.get('/daily-patient-info/:patientId', async (req, res) => {
-    try {
-        const admited_patients = await Patient.aggregate([{
-            $match: {
-                $and: [{
-                    _id: ObjectId(req.params.patientId)
-                },{
-                    condition: "normal"
-                }]
-            }
-        }, ]);
-        res.send(admited_patients[0]);
-    } catch (error) {
-        res.send({
-            message: error.message
-        });
-    }
-});
 
 router.get('/admited-patients', async (req, res) => {
     try {
-        const admited_patients = await AdmitedPatient.find();
+        // const admited_patients = await AdmitedPatient.find();
+        const admited_patients = await AdmitedPatient.aggregate([{
+            $lookup: {
+                from: "patients", 
+                localField: "patient",
+                foreignField: "_id",
+                as: "patient_info"
+            }
+        },
+        {   $unwind:"$patient_info" },
+    ]);
         res.send(admited_patients);
     } catch (error) {
         res.send({
@@ -59,7 +32,16 @@ router.get('/admited-patients', async (req, res) => {
 
 router.get('/daily-patients', async (req, res) => {
     try {
-        const daily_patients = await DailyPatient.find();
+        const daily_patients = await DailyPatient.aggregate([{
+            $lookup: {
+                from: "patients", 
+                localField: "patient",
+                foreignField: "_id",
+                as: "patient_info"
+            }
+        },
+        {   $unwind:"$patient_info" },
+    ]);
         res.send(daily_patients);
     } catch (error) {
         res.send({

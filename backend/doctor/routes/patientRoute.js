@@ -26,9 +26,7 @@ router.post('/createpatient', async (req, res) => {
         });
         const newPatient = await patient.save();
 
-        const find_last_patienst = await Patient.find({}).sort({
-            $natural: -1
-        }).limit(1);
+        const find_last_patienst = await Patient.find({}).sort({$natural: -1}).limit(1);
         if (req.body.condition === "admit") {
             const admitedPatient = new AdmitedPatient({
                 patient: find_last_patienst[0]._id,
@@ -36,14 +34,11 @@ router.post('/createpatient', async (req, res) => {
                 detail: [],
             });
             const newadmitedPatient = await admitedPatient.save();
+
+            const room = await Room.findById(req.body.admitedRoonNo);
+            room.is_occupied = true;
+            const updatedRoom = await room.save();
         }
-
-        const room = await Room.findById(req.body.admitedRoonNo);
-        room.is_occupied = true;
-        const updatedRoom = await room.save();
-
-
-
         res.send(newPatient);
     } catch (error) {
         res.send({
@@ -137,7 +132,7 @@ router.post('/regular-patient', async (req, res) => {
         var datas = req.body.inputList;
         const checkup = new Checkup({
             patient: req.body.patientId,
-            fee: req.body.fee,
+            fee: 100,
             detail: datas,
         });
         const newCheckup = await checkup.save();

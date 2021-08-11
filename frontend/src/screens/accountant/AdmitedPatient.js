@@ -9,9 +9,8 @@ import axios from "axios";
 
 
 function AdmitedPatient(props) {
-
     const [patients, setPatient] = useState([]);
-
+    const [filteredPatients, setFilteredPatients] = useState([]);
 
     useEffect(() => {
         fetchData()
@@ -21,19 +20,20 @@ function AdmitedPatient(props) {
         const data = await fetch('http://localhost:4000/api/accountant/admited-patients');
         const patients_data = await data.json();
         setPatient(patients_data);
+        setFilteredPatients(patients_data);
 
     }
 
     const handleChange = (index, patientId)=>{
-        if(patients[index].is_paid){
-            let newArr = [...patients]
+        if(filteredPatients[index].is_paid){
+            let newArr = [...filteredPatients]
             newArr[index].is_paid = false
-            setPatient(newArr)
+            setFilteredPatients(newArr)
             updatePaidStatus(patientId,false);
         }else{
-            let newArr = [...patients]
+            let newArr = [...filteredPatients]
             newArr[index].is_paid = true
-            setPatient(newArr)
+            setFilteredPatients(newArr)
             updatePaidStatus(patientId,true);
         }
     }
@@ -48,6 +48,20 @@ function AdmitedPatient(props) {
         }
         );
     }
+    const serachNameChange = (e)=> {
+        console.log(e.target.value)
+        if(e.target.value !== ""){
+            const filteredData = patients.filter(item => {
+            return (
+                item.patient_info.name.toLowerCase().search(e.target.value.toLowerCase()) !== -1
+            );
+            });
+            setFilteredPatients(filteredData)
+        }else{
+            setFilteredPatients(patients)
+        }
+        
+    }
 
     return (
         <div>
@@ -60,6 +74,11 @@ function AdmitedPatient(props) {
                             <div className="col-sm-6">
                                 <h1 className="m-0 text-dark">Admited Patients</h1>
                             </div>{/* /.col */}
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <input className="form-control" placeholder="search name" onChange={serachNameChange}/>
+                                </ol>
+                            </div>
                         </div>{/* /.row */}
                     </div>{/* /.container-fluid */}
                 </div>
@@ -77,12 +96,16 @@ function AdmitedPatient(props) {
                         </thead>
                         <tbody>
                             {
-                                patients.map((patient,index) => (
+                                filteredPatients.map((patient,index) => (
                                     <tr key={patient._id}>
                                         <td>#</td>
-                                        <td><PatientName patient_id ={patient.patient}/></td>
+                                        <td>{patient.patient_info.name}</td>
                                         <td>{patient.fee}</td>
-                                        <td><Discharge patient_id ={patient.patient}/></td>
+                                        {
+                                            (patient.patient_info.is_discharge)?
+                                            <td>Yes</td>:
+                                            <td>No</td>
+                                        }
                                         <td>
                                         <Switch 
                                             checked={patient.is_paid}  
@@ -103,38 +126,5 @@ function AdmitedPatient(props) {
     );
 }
 
-const PatientName = props => {
-    const [name, setName] = useState("");
-    useEffect(() => {
-        fetchDoctorName(props.patient_id);
-    }, []);
-    const fetchDoctorName = async (patient_id) => {
-        const data = await fetch(`http://localhost:4000/api/accountant/admited-patient-info/${patient_id}`);
-        const patient = await data.json();
-        setName(patient.name);
-    };
-    return (
-        <div>{name}</div>
-    );
-};
-const Discharge = props => {
-    const [patient, setPatient] = useState({});
-    useEffect(() => {
-        fetchDoctorName(props.patient_id);
-    }, []);
-    const fetchDoctorName = async (patient_id) => {
-        const data = await fetch(`http://localhost:4000/api/accountant/admited-patient-info/${patient_id}`);
-        const patient = await data.json();
-        setPatient(patient);
-    };
-    return (
-        <div>
-            {
-                (patient.is_discharge)?
-                <>Yes</>:<>No</>
-            }
-        </div>
-    );
-};
 
 export default AdmitedPatient;

@@ -22,7 +22,6 @@ function RegularCheckPage(props) {
 
     const [patients, setPatinet] = useState([]);
     const [patientId, setPatinetId] = useState([]);
-    const [fee, setFee] = useState([]);
 
     const [inputList, setInputList] = useState([{ problem: "", solution: "" }]);
 
@@ -54,7 +53,7 @@ function RegularCheckPage(props) {
     };
     const mySubmitHandler = (event) => {
         event.preventDefault();
-        dispatch(addRegularPatientCheckup(patientId,fee, inputList));
+        dispatch(addRegularPatientCheckup(patientId, inputList));
         history.push('/doctor/viewPatient');
     }
     const patientChange = (event, value) =>{
@@ -103,16 +102,7 @@ function RegularCheckPage(props) {
                                                         />
                                                         </div>
                                                     </div>
-                                                    <br></br>
-                                                    <div className="col-sm-6">
-                                                        <div className="col-sm-12">
-                                                            <div className="form-group">
-                                                                <div className="col-sm-12">
-                                                                    <label>Fee's</label> <input type="number" className="form-control" name="fee" onChange={(e) => setFee(e.target.value)}required />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    
                                                 </div>
                                                 <br></br>
                                                 <div className="row">
